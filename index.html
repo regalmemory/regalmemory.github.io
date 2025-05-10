@@ -2,13 +2,16 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>别克君威时光胶囊</title>
+    <title>别克君威时光档案馆</title>
     <style>
-        /* 老式渐背景 */
+        /* 复古纵向渐变背景 */
         body {
             margin: 0;
             height: 100vh;
-            background: linear-gradient(135deg, #6e48aa 0%, #9d50bb 30%, #4776e6 100%);
+            background: linear-gradient(to bottom, 
+                #003366 0%, 
+                #0066aa 30%, 
+                #66ccff 100%);
             font-family: "楷体", "STKaiti", serif;
             overflow: hidden;
         }
@@ -16,23 +19,31 @@
         /* 艺术字容器 */
         .title-box {
             position: absolute;
-            top: 50%;
+            top: 40%; /* 初始位置偏高 */
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             text-align: center;
-            opacity: 0; /* 初始隐藏 */
-            animation: fadeIn 2s ease-out forwards 0.5s;
+            opacity: 0;
+            animation: 
+                fallDown 2.5s ease-in forwards,
+                fadeIn 3s ease-out forwards;
         }
         
-        /* 艺术字样式 */
+        /* 超大艺术字 */
         .title {
-            color: gold;
-            text-shadow: 3px 3px 0px rgba(0,0,0,0.3), 
-                         -1px -1px 0px rgba(255,255,255,0.2);
-            font-size: 4rem;
+            color: #ffcc00;
+            text-shadow: 
+                4px 4px 0px #cc3300,
+                8px 8px 5px rgba(0,0,0,0.5);
+            font-size: 5.5rem;
             white-space: nowrap;
-            transform: scale(0.5);
-            animation: zoomIn 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards 1s;
+            letter-spacing: 3px;
+        }
+        
+        /* 文字坠落动画 */
+        @keyframes fallDown {
+            from { top: 20%; }
+            to { top: 50%; }
         }
         
         /* 淡入动画 */
@@ -40,16 +51,9 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        
-        /* 放大动画（类似PPT进入效果） */
-        @keyframes zoomIn {
-            from { transform: scale(0.5) translateY(-100px); }
-            to { transform: scale(1) translateY(0); }
-        }
     </style>
 </head>
 <body>
-    <!-- 艺术字部分 -->
     <div class="title-box">
         <h1 class="title">别克君威回忆网站</h1>
     </div>
