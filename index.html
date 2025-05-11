@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache"> <!-- 禁止缓存 -->
+    <meta http-equiv="Cache-Control" content="no-store"> <!-- 彻底禁用缓存 -->
     <title>别克君威时光档案馆</title>
     <style>
         body {
@@ -13,13 +13,16 @@
             overflow: hidden;
             position: relative;
         }
+        /* 捐款按钮容器 - 强制显示 */
         .donate-buttons {
             position: absolute;
             top: 20px;
             left: 20px;
-            display: flex;
+            display: flex !important; /* 最高优先级强制显示 */
             gap: 10px;
+            z-index: 1000;
         }
+        /* 按钮样式 */
         .donate-link {
             color: #ffcc00;
             font-size: 1.2rem;
@@ -28,43 +31,30 @@
             border: 1px solid #ffcc00;
             padding: 5px 10px;
             border-radius: 5px;
-            transition: all 0.3s;
+            background: rgba(0,0,0,0.3);
         }
         .donate-link:hover {
-            background: rgba(255, 204, 0, 0.2);
+            background: rgba(255, 204, 0, 0.3);
         }
+        /* 主标题 */
         .title-box {
             position: absolute;
-            top: 40%;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             text-align: center;
-            opacity: 0;
-            animation: 
-                fallDown 2.5s ease-in forwards,
-                fadeIn 3s ease-out forwards;
         }
         .title {
             color: #ffcc00;
-            text-shadow: 
-                4px 4px 0px #cc3300,
-                8px 8px 5px rgba(0,0,0,0.5);
+            text-shadow: 4px 4px 0px #cc3300, 8px 8px 5px rgba(0,0,0,0.5);
             font-size: 5.5rem;
-            white-space: nowrap;
             letter-spacing: 3px;
-        }
-        @keyframes fallDown {
-            from { top: 20%; }
-            to { top: 50%; }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <!-- 两个按钮会始终显示 -->
+    <!-- 双按钮永久固定显示 -->
     <div class="donate-buttons">
         <a href="donate.html" class="donate-link">PayPal捐款</a>
         <a href="wechat-donate.html" class="donate-link">微信捐款</a>
