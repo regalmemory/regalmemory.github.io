@@ -2,66 +2,48 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-store"> <!-- 彻底禁用缓存 -->
-    <title>别克君威时光档案馆</title>
+    <meta http-equiv="Cache-Control" content="no-store">
+    <title>PayPal捐款账号wangznyx@hotmail.com或PayPal扫码</title>
     <style>
         body {
             margin: 0;
             height: 100vh;
-            background: linear-gradient(to bottom, #003366 0%, #0066aa 30%, #66ccff 100%);
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-family: "楷体", "STKaiti", serif;
-            overflow: hidden;
-            position: relative;
         }
-        /* 捐款按钮容器 - 强制显示 */
-        .donate-buttons {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            display: flex !important; /* 最高优先级强制显示 */
-            gap: 10px;
-            z-index: 1000;
-        }
-        /* 按钮样式 */
-        .donate-link {
-            color: #ffcc00;
-            font-size: 1.2rem;
-            text-decoration: none;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-            border: 1px solid #ffcc00;
-            padding: 5px 10px;
-            border-radius: 5px;
-            background: rgba(0,0,0,0.3);
-        }
-        .donate-link:hover {
-            background: rgba(255, 204, 0, 0.3);
-        }
-        /* 主标题 */
-        .title-box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .image-container {
             text-align: center;
         }
-        .title {
-            color: #ffcc00;
-            text-shadow: 4px 4px 0px #cc3300, 8px 8px 5px rgba(0,0,0,0.5);
-            font-size: 5.5rem;
-            letter-spacing: 3px;
-            margin: 0;
+        .image-container img {
+            width: 400px; /* 强制放大二维码 */
+            height: auto;
+            border: 3px solid #0066aa;
+            box-shadow: 0 0 25px rgba(0,0,0,0.4);
+        }
+        h2 {
+            color: #0066aa;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 8px 15px;
+            background: #0066aa;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <!-- 双按钮永久固定显示 -->
-    <div class="donate-buttons">
-        <a href="donate.html" class="donate-link">PayPal捐款</a>
-        <a href="wechat-donate.html" class="donate-link">微信捐款</a>
-    </div>
-    
-    <div class="title-box">
-        <h1 class="title">别克君威回忆网站</h1>
+    <div class="image-container">
+        <h2>请扫描下方PayPal二维码</h2>
+        <img src="https://i.postimg.cc/R3DngtGP/temp-Imagek85-Nl-R.avif" alt="PayPal捐款二维码">
+        <a href="index.html" class="back-link">返回首页</a>
     </div>
 </body>
 </html>
