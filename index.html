@@ -2,26 +2,25 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache"> <!-- 禁止缓存 -->
     <title>别克君威时光档案馆</title>
     <style>
-        /* 复古纵向渐变背景 */
         body {
             margin: 0;
             height: 100vh;
-            background: linear-gradient(to bottom, 
-                #003366 0%, 
-                #0066aa 30%, 
-                #66ccff 100%);
+            background: linear-gradient(to bottom, #003366 0%, #0066aa 30%, #66ccff 100%);
             font-family: "楷体", "STKaiti", serif;
             overflow: hidden;
             position: relative;
         }
-        
-        /* 捐款链接样式 */
-        .donate-link {
+        .donate-buttons {
             position: absolute;
             top: 20px;
             left: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .donate-link {
             color: #ffcc00;
             font-size: 1.2rem;
             text-decoration: none;
@@ -34,8 +33,6 @@
         .donate-link:hover {
             background: rgba(255, 204, 0, 0.2);
         }
-        
-        /* 艺术字容器 */
         .title-box {
             position: absolute;
             top: 40%;
@@ -47,8 +44,6 @@
                 fallDown 2.5s ease-in forwards,
                 fadeIn 3s ease-out forwards;
         }
-        
-        /* 超大艺术字 */
         .title {
             color: #ffcc00;
             text-shadow: 
@@ -58,14 +53,10 @@
             white-space: nowrap;
             letter-spacing: 3px;
         }
-        
-        /* 文字坠落动画 */
         @keyframes fallDown {
             from { top: 20%; }
             to { top: 50%; }
         }
-        
-        /* 淡入动画 */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -73,10 +64,12 @@
     </style>
 </head>
 <body>
-    <!-- 捐款链接 -->
-    <a href="donate.html" class="donate-link">PayPal捐款支持</a>
+    <!-- 两个按钮会始终显示 -->
+    <div class="donate-buttons">
+        <a href="donate.html" class="donate-link">PayPal捐款</a>
+        <a href="wechat-donate.html" class="donate-link">微信捐款</a>
+    </div>
     
-    <!-- 主标题 -->
     <div class="title-box">
         <h1 class="title">别克君威回忆网站</h1>
     </div>
