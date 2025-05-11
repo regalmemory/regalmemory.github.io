@@ -1,1 +1,162 @@
-
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>别克君威档案馆</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: "楷体", "STKaiti", serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background-color: #111;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #ffcc00;
+        }
+        
+        h1 {
+            color: #ffcc00;
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #ff3333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .directory {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .category {
+            background-color: #222;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3);
+            border-color: #ffcc00;
+        }
+        
+        .category h2 {
+            color: #ffcc00;
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+        
+        .category p {
+            color: #aaa;
+            font-size: 1rem;
+        }
+        
+        footer {
+            background-color: #111;
+            padding: 15px;
+            text-align: center;
+            margin-top: auto;
+            border-top: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-button">返回首页</a>
+        <h1>· 别克君威档案馆 ·</h1>
+    </header>
+    
+    <div class="directory">
+        <!-- 简介 -->
+        <a href="bi.html" class="category">
+            <h2>简介</h2>
+            <p>车辆历史与概述</p>
+        </a>
+        
+        <!-- 图册 -->
+        <a href="gallery.html" class="category">
+            <h2>图册</h2>
+            <p>高清图片与展示</p>
+        </a>
+        
+        <!-- 车辆参数 -->
+        <a href="pm.html" class="category">
+            <h2>车辆参数</h2>
+            <p>详细技术规格</p>
+        </a>
+        
+        <!-- 驾驶体验 -->
+        <a href="xp.html" class="category">
+            <h2>车友驾驶体验</h2>
+            <p>真实用户反馈</p>
+        </a>
+        
+        <!-- 可选功能 -->
+        <a href="hiddenf.html" class="category">
+            <h2>可选功能</h2>
+            <p>配置与选装件</p>
+        </a>
+        
+        <!-- 安全性 -->
+        <a href="safety.html" class="category">
+            <h2>安全性</h2>
+            <p>安全技术与评测</p>
+        </a>
+        
+        <!-- 预留空位1-5 -->
+        <a href="r1.html" class="category">
+            <h2>预留空位1</h2>
+            <p>待开发内容</p>
+        </a>
+        
+        <a href="r2.html" class="category">
+            <h2>预留空位2</h2>
+            <p>待开发内容</p>
+        </a>
+        
+        <a href="r3.html" class="category">
+            <h2>预留空位3</h2>
+            <p>待开发内容</p>
+        </a>
+        
+        <a href="r4.html" class="category">
+            <h2>预留空位4</h2>
+            <p>待开发内容</p>
+        </a>
+        
+        <a href="r5.html" class="category">
+            <h2>预留空位5</h2>
+            <p>待开发内容</p>
+        </a>
+    </div>
+    
+    <footer>
+        <p>© 2024 别克君威回忆网站 | 持续开发中</p>
+    </footer>
+</body>
+</html>
