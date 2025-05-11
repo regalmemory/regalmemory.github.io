@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-store">
     <title>PayPal捐款支持</title>
     <style>
         body {
@@ -18,28 +18,32 @@
             text-align: center;
         }
         .image-container img {
-            max-width: 300px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            border: 2px solid #0066aa;
-        }
-        .back-link {
-            display: block;
-            margin-top: 20px;
-            color: #0066cc;
-            text-decoration: none;
-            font-size: 1.2rem;
+            width: 400px; /* 强制放大二维码 */
+            height: auto;
+            border: 3px solid #0066aa;
+            box-shadow: 0 0 25px rgba(0,0,0,0.4);
         }
         h2 {
             color: #0066aa;
+            font-size: 2rem;
             margin-bottom: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 8px 15px;
+            background: #0066aa;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="image-container">
-        <h2>PayPal扫码支持</h2>
+        <h2>请扫描下方PayPal二维码</h2>
         <img src="https://i.postimg.cc/R3DngtGP/temp-Imagek85-Nl-R.avif" alt="PayPal捐款二维码">
-        <a href="index.html" class="back-link">← 返回首页</a>
+        <a href="index.html" class="back-link">返回首页</a>
     </div>
 </body>
 </html>
