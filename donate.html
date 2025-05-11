@@ -2,92 +2,44 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>别克君威时光档案馆</title>
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <title>PayPal捐款支持</title>
     <style>
-        /* 复古纵向渐变背景 */
         body {
             margin: 0;
             height: 100vh;
-            background: linear-gradient(to bottom, 
-                #003366 0%, 
-                #0066aa 30%, 
-                #66ccff 100%);
-            font-family: "楷体", "STKaiti", serif;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        /* 捐款按钮容器 */
-        .donate-buttons {
-            position: absolute;
-            top: 20px;
-            left: 20px;
+            background: #f0f0f0;
             display: flex;
-            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            font-family: "楷体", "STKaiti", serif;
         }
-        
-        /* 通用按钮样式 */
-        .donate-link {
-            color: #ffcc00;
-            font-size: 1.2rem;
-            text-decoration: none;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-            border: 1px solid #ffcc00;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-        .donate-link:hover {
-            background: rgba(255, 204, 0, 0.2);
-        }
-        
-        /* 艺术字容器 */
-        .title-box {
-            position: absolute;
-            top: 40%;
-            left: 50%;
-            transform: translateX(-50%);
+        .image-container {
             text-align: center;
-            opacity: 0;
-            animation: 
-                fallDown 2.5s ease-in forwards,
-                fadeIn 3s ease-out forwards;
         }
-        
-        /* 超大艺术字 */
-        .title {
-            color: #ffcc00;
-            text-shadow: 
-                4px 4px 0px #cc3300,
-                8px 8px 5px rgba(0,0,0,0.5);
-            font-size: 5.5rem;
-            white-space: nowrap;
-            letter-spacing: 3px;
+        .image-container img {
+            max-width: 300px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            border: 2px solid #0066aa;
         }
-        
-        /* 文字坠落动画 */
-        @keyframes fallDown {
-            from { top: 20%; }
-            to { top: 50%; }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 1.2rem;
         }
-        
-        /* 淡入动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        h2 {
+            color: #0066aa;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- 捐款按钮容器 -->
-    <div class="donate-buttons">
-        <a href="donate.html" class="donate-link">PayPal捐款</a>
-        <a href="wechat-donate.html" class="donate-link">微信捐款</a>
-    </div>
-    
-    <!-- 主标题 -->
-    <div class="title-box">
-        <h1 class="title">别克君威回忆网站</h1>
+    <div class="image-container">
+        <h2>PayPal扫码支持</h2>
+        <img src="https://i.postimg.cc/R3DngtGP/temp-Imagek85-Nl-R.avif" alt="PayPal捐款二维码">
+        <a href="index.html" class="back-link">← 返回首页</a>
     </div>
 </body>
 </html>
