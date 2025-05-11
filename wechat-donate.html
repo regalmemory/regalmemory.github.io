@@ -6,9 +6,9 @@
     <title>微信捐款支持</title>
     <style>
         body {
-            margin: 0;
+                       margin: 0;
             height: 100vh;
-            background: #f0f0f0;
+            background: #000; /* 纯黑背景 */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,26 +16,35 @@
         }
         .image-container {
             text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1); /* 半透明白底容器 */
+            border-radius: 10px;
         }
         .image-container img {
-            width: 400px; /* 与PayPal页面同尺寸 */
+            width: 420px; /* 进一步放大二维码 */
             height: auto;
-            border: 3px solid #0066aa;
-            box-shadow: 0 0 25px rgba(0,0,0,0.4);
+            border: 2px solid #ffcc00; /* 金色边框 */
+            box-shadow: 0 0 30px rgba(255, 204, 0, 0.3); /* 金色辉光 */
         }
         h2 {
-            color: #0066aa;
+            color: #ffcc00; /* 金色文字 */
             font-size: 2rem;
             margin-bottom: 20px;
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
         }
         .back-link {
             display: inline-block;
             margin-top: 25px;
             padding: 8px 15px;
-            background: #0066aa;
-            color: white;
+            background: #ffcc00; /* 金色按钮 */
+            color: #000; /* 黑色文字 */
             text-decoration: none;
             border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .back-link:hover {
+            background: #ffdd33; /* 悬停变亮 */
         }
     </style>
 </head>
