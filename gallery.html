@@ -429,17 +429,17 @@
         <div class="gallery-section">
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="别克君威内饰" class="gallery-img">
+                    <img src="https://regalmemory.github.io/in2.HEIC" alt="别克君威内饰" class="gallery-img" onerror="handleImageError(this, '内饰')">
                     <div class="gallery-caption">豪华内饰设计</div>
                 </div>
                 
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="别克君威内饰" class="gallery-img">
+                    <img src="https://regalmemory.github.io/in3.HEIC" alt="别克君威内饰" class="gallery-img" onerror="handleImageError(this, '内饰')">
                     <div class="gallery-caption">舒适座椅</div>
                 </div>
                 
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="别克君威内饰" class="gallery-img">
+                    <img src="https://regalmemory.github.io/in4.jpg" alt="别克君威内饰" class="gallery-img" onerror="handleImageError(this, '内饰')">
                     <div class="gallery-caption">中控台细节</div>
                 </div>
             </div>
@@ -450,17 +450,17 @@
         <div class="gallery-section">
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1549399542-7e82138a0d6c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="别克君威外观" class="gallery-img">
+                    <img src="https://regalmemory.github.io/out1.jpeg" alt="别克君威外观" class="gallery-img" onerror="handleImageError(this, '外观')">
                     <div class="gallery-caption">前脸设计</div>
                 </div>
                 
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="别克君威外观" class="gallery-img">
+                    <img src="https://regalmemory.github.io/out2.jpeg" alt="别克君威外观" class="gallery-img" onerror="handleImageError(this, '外观')">
                     <div class="gallery-caption">侧面轮廓</div>
                 </div>
                 
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="别克君威外观" class="gallery-img">
+                    <img src="https://regalmemory.github.io/out3.jpeg" alt="别克君威外观" class="gallery-img" onerror="handleImageError(this, '外观')">
                     <div class="gallery-caption">尾部设计</div>
                 </div>
             </div>
@@ -527,7 +527,6 @@
             currentModel = modelType;
             const viewer = document.getElementById('viewer');
             const viewerContent = document.getElementById('viewer-content');
-            const downloadBtn = document.getElementById('viewer-download-btn');
             
             // 在实际应用中，这里应该检测设备是否支持3D模型渲染
             // 这里我们模拟一个不支持的情况，显示提示信息
@@ -576,6 +575,23 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+        
+        // 图片加载错误处理
+        function handleImageError(img, type) {
+            console.log(`图片加载失败: ${img.src}`);
+            // 设置占位符背景和文本
+            img.src = '';
+            img.style.background = '#2a2a2a';
+            img.style.display = 'flex';
+            img.style.justifyContent = 'center';
+            img.style.alignItems = 'center';
+            img.style.color = '#999';
+            img.innerHTML = `<div style="text-align: center;">
+                <div style="font-size: 2rem; margin-bottom: 10px;">📷</div>
+                <div>${type}图片加载失败</div>
+                <div style="font-size: 0.8rem; margin-top: 5px;">${img.alt}</div>
+            </div>`;
         }
         
         // 导航按钮事件
