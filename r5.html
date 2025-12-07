@@ -1,1 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="GB2312">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>别克君威鸣谢页面</title>
+    <link href="https://fonts.googleapis.com/css2?family=Microsoft+Sans+Serif:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* 复古风格CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(45deg, #004466, #006699);
+            color: #000;
+            font-family: 'Microsoft Sans Serif', '宋体', sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjMDA0MDY2Ij48L3JlY3Q+PHBhdGggZD0iTTAgMGg1MHY1MEgweiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAzMzQ0IiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD48L3N2Zz4=');
+            animation: bgScroll 20s linear infinite;
+        }
+        
+        @keyframes bgScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+        
+        /* 复古边框效果 */
+        .retro-border {
+            border: 3px double #666;
+            background-color: #C0C0C0;
+            padding: 2px;
+            box-shadow: 
+                inset -1px -1px 0 #000,
+                inset 1px 1px 0 #FFF;
+        }
+        
+        .retro-border-inner {
+            border: 2px solid #808080;
+            padding: 10px;
+            background-color: #E0E0E0;
+        }
+        
+        /* 导航栏样式 - Win98风格 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: linear-gradient(to right, #000080, #1084D0);
+            border: 2px outset #C0C0C0;
+            margin: 15px;
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+        }
+        
+        .nav-left, .nav-right {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            padding: 8px 16px;
+            background: linear-gradient(to bottom, #E0E0E0, #C0C0C0);
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 12px;
+            border: 2px outset #C0C0C0;
+            cursor: pointer;
+            text-shadow: 1px 1px 0 #FFF;
+            transition: all 0.1s ease;
+        }
+        
+        .nav-btn:active {
+            border: 2px inset #C0C0C0;
+            background: linear-gradient(to bottom, #C0C0C0, #E0E0E0);
+        }
+        
+        .nav-btn:hover {
+            color: #000080;
+        }
+        
+        /* 容器样式 - Win95窗口样式 */
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 5px;
+        }
+        
+        .window {
+            border: 3px outset #C0C0C0;
+            background-color: #C0C0C0;
+        }
+        
+        .window-title-bar {
+            background: linear-gradient(to right, #000080, #1084D0);
+            color: #FFF;
+            padding: 4px 10px;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px outset #C0C0C0;
+        }
+        
+        .window-buttons {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .window-button {
+            width: 18px;
+            height: 16px;
+            background: #C0C0C0;
+            border: 1px outset #C0C0C0;
+            font-size: 10px;
+            text-align: center;
+            line-height: 14px;
+            cursor: pointer;
+        }
+        
+        .window-content {
+            background-color: #FFFFFF;
+            padding: 20px;
+            border: 2px inset #C0C0C0;
+            min-height: 400px;
+        }
+        
+        /* 标题样式 */
+        h1 {
+            font-size: 24px;
+            color: #000080;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #C0C0C0;
+            font-family: 'Times New Roman', serif;
+        }
+        
+        h2 {
+            font-size: 18px;
+            color: #800000;
+            margin: 25px 0 15px;
+            padding-left: 10px;
+            border-left: 4px solid #000080;
+            font-weight: bold;
+        }
+        
+        /* 维护者信息样式 */
+        .maintainers {
+            margin: 30px 0;
+        }
+        
+        .maintainer-card {
+            background: linear-gradient(to bottom, #F0F0F0, #E0E0E0);
+            border: 2px outset #C0C0C0;
+            padding: 15px;
+            margin: 15px 0;
+            position: relative;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .maintainer-title {
+            font-size: 16px;
+            color: #000080;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .maintainer-name {
+            font-size: 14px;
+            color: #000;
+            margin-bottom: 5px;
+        }
+        
+        .maintainer-contact {
+            font-size: 12px;
+            color: #666;
+            background-color: #FFFFCC;
+            padding: 8px;
+            border: 1px dotted #CC9900;
+            margin-top: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* 复古动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* 闪烁文字 */
+        .blinking-text {
+            animation: blink 1s infinite;
+            color: #FF0000;
+            font-weight: bold;
+        }
+        
+        /* 跑马灯 */
+        .marquee {
+            background-color: #FFFF00;
+            color: #FF0000;
+            padding: 5px;
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 20px 0;
+            border: 2px dotted #FF9900;
+        }
+        
+        .marquee span {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+            font-weight: bold;
+        }
+        
+        /* 复古按钮 */
+        .retro-button {
+            background: linear-gradient(to bottom, #E0E0E0, #C0C0C0);
+            border: 2px outset #C0C0C0;
+            padding: 8px 16px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+        }
+        
+        .retro-button:hover {
+            background: linear-gradient(to bottom, #C0C0C0, #E0E0E0);
+            color: #000080;
+        }
+        
+        .retro-button:active {
+            border: 2px inset #C0C0C0;
+        }
+        
+        /* 反馈区域 */
+        .feedback-section {
+            background-color: #F0F8FF;
+            border: 3px ridge #C0C0C0;
+            padding: 20px;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .feedback-section:before {
+            content: "💌";
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            font-size: 24px;
+            background-color: #FFD700;
+            border: 2px solid #FF9900;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 模态框样式 - 复古风格 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-window {
+            border: 3px outset #C0C0C0;
+            background-color: #C0C0C0;
+            min-width: 400px;
+            max-width: 600px;
+        }
+        
+        .modal-title-bar {
+            background: linear-gradient(to right, #000080, #1084D0);
+            color: #FFF;
+            padding: 6px 12px;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #FFFFFF;
+            padding: 20px;
+            border: 2px inset #C0C0C0;
+        }
+        
+        /* 复古表单样式 */
+        .retro-form-group {
+            margin-bottom: 15px;
+        }
+        
+        .retro-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #000080;
+            font-size: 12px;
+        }
+        
+        .retro-input {
+            width: 100%;
+            padding: 6px;
+            border: 2px inset #C0C0C0;
+            background-color: #FFF;
+            font-family: 'Microsoft Sans Serif', sans-serif;
+            font-size: 12px;
+        }
+        
+        .retro-textarea {
+            width: 100%;
+            padding: 6px;
+            border: 2px inset #C0C0C0;
+            background-color: #FFF;
+            font-family: 'Microsoft Sans Serif', sans-serif;
+            font-size: 12px;
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* 交易记录区域 */
+        .trade-section {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(45deg, #FFCC99, #FF9966);
+            border: 4px ridge #CC6600;
+        }
+        
+        .trade-section h2 {
+            color: #993300;
+            text-align: center;
+            border: none;
+            margin-bottom: 20px;
+        }
+        
+        .trade-button {
+            background: linear-gradient(to bottom, #FF9900, #CC6600);
+            border: 3px outset #CC6600;
+            padding: 15px 30px;
+            color: #FFF;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 1px 1px 0 #000;
+        }
+        
+        .trade-button:hover {
+            background: linear-gradient(to bottom, #CC6600, #FF9900);
+            border: 3px inset #CC6600;
+        }
+        
+        /* 复古滚动条 */
+        ::-webkit-scrollbar {
+            width: 16px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #C0C0C0;
+            border: 1px outset #C0C0C0;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #000080, #1084D0);
+            border: 2px outset #C0C0C0;
+        }
+        
+        /* 复古GIF动画占位符 */
+        .construction-gif {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #FFFFCC;
+            border: 2px dashed #FF9900;
+        }
+        
+        .construction-gif:before {
+            content: "🚧 ";
+        }
+        
+        /* 复古计数器 */
+        .visitor-counter {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: #000;
+            color: #0F0;
+            padding: 5px 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            border: 1px solid #0F0;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .container {
+                margin: 15px;
+            }
+            
+            .modal-window {
+                min-width: 300px;
+                margin: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 复古访问计数器 -->
+    <div class="visitor-counter">
+        访问次数: <span id="counter">000042</span>
+    </div>
+    
+    <!-- 导航栏 -->
+    <div class="navbar retro-border">
+        <div class="nav-left">
+            <a href="https://regalmemory.github.io/index.html" class="nav-btn">🏠 主页</a>
+            <a href="https://regalmemory.github.io/archive.html" class="nav-btn">📁 档案馆</a>
+        </div>
+        <div class="nav-right">
+            <button class="nav-btn" onclick="openFeedback()">💌 反馈意见</button>
+        </div>
+    </div>
+    
+    <!-- 跑马灯 -->
+    <div class="marquee">
+        <span>✨ 欢迎来到别克君威鸣谢页面！本页面采用1990-2000年代怀旧风格设计 ✨ 建议使用IE 5.0以上浏览器获得最佳浏览体验 ✨</span>
+    </div>
+    
+    <div class="container">
+        <!-- 主窗口 -->
+        <div class="window">
+            <div class="window-title-bar">
+                <span>别克君威鸣谢页面 - 鸣谢与维护者信息</span>
+                <div class="window-buttons">
+                    <div class="window-button">_</div>
+                    <div class="window-button">□</div>
+                    <div class="window-button" onclick="window.close()">×</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <!-- 闪烁标题 -->
+                <h1 class="blinking-text">⚠️ 别克君威网站鸣谢页面 ⚠️</h1>
+                
+                <!-- 施工中动画占位符 -->
+                <div class="construction-gif">
+                    网页正在建设中... 最后更新: 1999年12月31日
+                </div>
+                
+                <!-- 维护者信息 -->
+                <div class="maintainers">
+                    <h2>📅 历史维护者</h2>
+                    
+                    <div class="maintainer-card">
+                        <div class="maintainer-title">第一阶段：1999-2008年</div>
+                        <div class="maintainer-name">👤 维护者：华同方</div>
+                        <div class="maintainer-contact">
+                            💡 备注：网站初创时期的维护者，奠定了网站的基础架构
+                        </div>
+                    </div>
+                    
+                    <div class="maintainer-card" style="animation-delay: 0.2s;">
+                        <div class="maintainer-title">第二阶段：2008-2017年</div>
+                        <div class="maintainer-name">👤 维护者：知足常乐</div>
+                        <div class="maintainer-contact">
+                            📞 联系方式：5544642
+                        </div>
+                    </div>
+                    
+                    <div class="maintainer-card" style="animation-delay: 0.4s;">
+                        <div class="maintainer-title">第三阶段：2018-2024年</div>
+                        <div class="maintainer-name">👤 维护者：人到无求品自高</div>
+                        <div class="maintainer-contact">
+                            💡 备注：为网站现代化转型做出重要贡献
+                        </div>
+                    </div>
+                    
+                    <div class="maintainer-card" style="animation-delay: 0.6s;">
+                        <div class="maintainer-title">第四阶段：2024年-至今</div>
+                        <div class="maintainer-name">👤 维护者：flamezingel</div>
+                        <div class="maintainer-contact">
+                            📧 邮箱：jw.31119@yahoo.com<br>
+                            📱 Signal: https://signal.me/#eu/5doDi0-10265vcVuH2BNV4YK_cg76cPJ-lAiGORD6FZa6PZ600NKNL3rhdD4t6JA
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 反馈建议 -->
+                <div class="feedback-section">
+                    <h2>💡 反馈与建议</h2>
+                    <p>您的反馈对我们非常重要！请通过以下方式联系我们：</p>
+                    <div class="maintainer-contact" style="margin: 15px 0;">
+                        <strong>推荐联系方式：</strong><br>
+                        📧 邮箱：jw.31119@yahoo.com<br>
+                        📱 Signal: https://signal.me/#eu/5doDi0-10265vcVuH2BNV4YK_cg76cPJ-lAiGORD6FZa6PZ600NKNL3rhdD4t6JA
+                    </div>
+                    <p>使用以上联系方式反馈，可以得到更快的改进和更好的回复。</p>
+                    <button class="retro-button" onclick="openFeedback()">
+                        📝 点击这里填写在线反馈表
+                    </button>
+                </div>
+                
+                <!-- 网站易主交易记录 -->
+                <div class="trade-section">
+                    <h2>🏷️ 网站易主交易记录</h2>
+                    <p>了解网站所有权变更历史，或洽谈购买事宜</p>
+                    <a href="https://regalmemory.github.io/goumaiwangzhan.html" class="trade-button">
+                        💰 网站易主交易记录/购买网站
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 反馈模态框 -->
+    <div class="modal" id="feedback-modal">
+        <div class="modal-window">
+            <div class="modal-title-bar">
+                <span>📝 反馈意见表</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeModal('feedback-modal')">×</div>
+                </div>
+            </div>
+            <div class="modal-content">
+                <form id="feedback-form">
+                    <div class="retro-form-group">
+                        <label class="retro-label">标题 (选填):</label>
+                        <input type="text" class="retro-input" name="title" placeholder="请输入反馈标题...">
+                    </div>
+                    
+                    <div class="retro-form-group">
+                        <label class="retro-label">正文 (必填):</label>
+                        <textarea class="retro-textarea" name="message" placeholder="请输入您的反馈内容..." required></textarea>
+                    </div>
+                    
+                    <div class="retro-form-group">
+                        <label class="retro-label">联系方式 (选填):</label>
+                        <input type="text" class="retro-input" name="contact" placeholder="邮箱/电话/Signal等...">
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button type="submit" class="retro-button" style="padding: 10px 30px;">
+                            📤 提交反馈
+                        </button>
+                        <button type="button" class="retro-button" onclick="closeModal('feedback-modal')" style="background: linear-gradient(to bottom, #FF9999, #CC6666);">
+                            ❌ 取消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        // 复古计数器动画
+        function animateCounter() {
+            const counter = document.getElementById('counter');
+            let count = parseInt(counter.textContent);
+            setInterval(() => {
+                count++;
+                counter.textContent = count.toString().padStart(6, '0');
+            }, 3000);
+        }
+        
+        // 模态框功能
+        function openFeedback() {
+            document.getElementById('feedback-modal').style.display = 'flex';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // 使用Formspree的免费服务处理表单提交
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('feedback-form');
+            
+            // 使用Formspree免费服务
+            form.action = 'https://formspree.io/f/xpzvoojk';
+            form.method = 'POST';
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                
+                // 显示提交中状态
+                submitBtn.innerHTML = '⏳ 提交中...';
+                submitBtn.disabled = true;
+                
+                try {
+                    const response = await fetch(form.action, {
+                        method: form.method,
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        // 提交成功
+                        submitBtn.innerHTML = '✅ 提交成功！';
+                        alert('感谢您的反馈！我们会尽快处理。');
+                        closeModal('feedback-modal');
+                        form.reset();
+                        
+                        // 3秒后恢复按钮状态
+                        setTimeout(() => {
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                        }, 3000);
+                    } else {
+                        // 提交失败，尝试备用方案
+                        throw new Error('提交失败');
+                    }
+                } catch (error) {
+                    // 备用方案：发送到您的邮箱
+                    const title = formData.get('title') || '无标题';
+                    const message = formData.get('message');
+                    const contact = formData.get('contact') || '未提供';
+                    
+                    // 创建邮件链接
+                    const subject = `网站反馈: ${title}`;
+                    const body = `反馈内容:\n${message}\n\n联系方式: ${contact}\n\n提交时间: ${new Date().toLocaleString()}`;
+                    const mailtoLink = `mailto:jw.31119@yahoo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                    
+                    // 提示用户手动发送邮件
+                    submitBtn.innerHTML = '📧 准备邮箱';
+                    alert('自动提交失败，请点击确定后手动发送邮件。');
+                    
+                    // 打开用户的邮件客户端
+                    window.location.href = mailtoLink;
+                    
+                    // 关闭模态框
+                    setTimeout(() => {
+                        closeModal('feedback-modal');
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        form.reset();
+                    }, 1000);
+                }
+            });
+        });
+        
+        // 复古效果：随机改变背景颜色
+        function retroBackgroundEffect() {
+            const colors = [
+                'linear-gradient(45deg, #004466, #006699)',
+                'linear-gradient(45deg, #660066, #990099)',
+                'linear-gradient(45deg, #006600, #009900)',
+                'linear-gradient(45deg, #666600, #999900)'
+            ];
+            
+            let currentColor = 0;
+            setInterval(() => {
+                document.body.style.backgroundImage = colors[currentColor];
+                currentColor = (currentColor + 1) % colors.length;
+            }, 10000);
+        }
+        
+        // 复古效果：添加闪烁的星星
+        function addRetroStars() {
+            const starColors = ['#FF0', '#0FF', '#F0F', '#FFF'];
+            for (let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'fixed';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 10 + 5 + 'px';
+                star.style.height = star.style.width;
+                star.style.backgroundColor = starColors[Math.floor(Math.random() * starColors.length)];
+                star.style.borderRadius = '50%';
+                star.style.animation = 'blink ' + (Math.random() * 2 + 1) + 's infinite';
+                star.style.zIndex = '1';
+                document.body.appendChild(star);
+            }
+        }
+        
+        // 复古效果：添加打字机效果
+        function typewriterEffect() {
+            const elements = document.querySelectorAll('.maintainer-name, .maintainer-title');
+            elements.forEach(element => {
+                const originalText = element.textContent;
+                element.textContent = '';
+                let i = 0;
+                const type = setInterval(() => {
+                    if (i < originalText.length) {
+                        element.textContent += originalText.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(type);
+                    }
+                }, 50);
+            });
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', function() {
+            animateCounter();
+            retroBackgroundEffect();
+            addRetroStars();
+            typewriterEffect();
+            
+            // 添加复古音效
+            const audio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=');
+            const buttons = document.querySelectorAll('.nav-btn, .retro-button, .trade-button');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    audio.play().catch(() => {});
+                });
+            });
+        });
+    </script>
+</body>
+</html>
