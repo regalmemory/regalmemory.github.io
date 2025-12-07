@@ -1,1 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>别克君威安全测试视频</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.7;
+            padding: 0;
+            margin: 0;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: rgba(0, 0, 0, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #333;
+        }
+        
+        .nav-left, .nav-right {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            color: #e0b43c;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            border: 1px solid #444;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+        
+        .nav-btn:hover {
+            background: linear-gradient(135deg, #3c3c3c 0%, #2a2a2a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* 容器样式 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        
+        /* 标题样式 */
+        h1 {
+            font-size: 2.8rem;
+            color: #e0b43c;
+            text-align: center;
+            margin: 30px 0 40px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        h2 {
+            font-size: 2rem;
+            color: #d0a53c;
+            margin: 50px 0 25px;
+            font-weight: 600;
+            padding-left: 10px;
+            border-left: 4px solid #e0b43c;
+        }
+        
+        /* 视频区域 */
+        .videos-section {
+            margin: 40px 0;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 40px;
+            margin: 30px 0;
+        }
+        
+        .video-card {
+            background: linear-gradient(135deg, #252525 0%, #1a1a1a 100%);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+            border: 1px solid #333;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+        
+        .video-title {
+            font-size: 1.4rem;
+            color: #e0b43c;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 比例 */
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .video-description {
+            color: #aaa;
+            font-size: 0.95rem;
+            text-align: center;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #e0b43c 0%, #c49a3c 100%);
+            color: #121212;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #f0c44c 0%, #d4aa4c 100%);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            color: #e0e0e0;
+            border: 1px solid #444;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #3c3c3c 0%, #2a2a2a 100%);
+        }
+        
+        /* 捐赠区域 */
+        .donation-section {
+            text-align: center;
+            margin: 80px 0 40px;
+            padding: 50px;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+        
+        .donation-section h2 {
+            font-size: 2.2rem;
+            color: #fff;
+            margin-bottom: 30px;
+            text-align: center;
+            border: none;
+            padding: 0;
+        }
+        
+        .donation-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #e0b43c 0%, #c49a3c 100%);
+            color: #121212;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .donation-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #f0c44c 0%, #d4aa4c 100%);
+        }
+        
+        /* 说明区域 */
+        .info-section {
+            background: #252525;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid #333;
+        }
+        
+        .info-title {
+            font-size: 1.5rem;
+            color: #e0b43c;
+            margin-bottom: 20px;
+        }
+        
+        .info-content {
+            color: #ccc;
+            line-height: 1.8;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-left, .nav-right {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.7rem;
+            }
+            
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-container {
+                padding-bottom: 75%; /* 4:3 比例用于移动设备 */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .video-container {
+                padding-bottom: 100%; /* 1:1 比例用于小屏幕 */
+            }
+            
+            .donation-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <div class="nav-left">
+            <a href="https://regalmemory.github.io/index.html" class="nav-btn">主页</a>
+            <a href="https://regalmemory.github.io/archive.html" class="nav-btn">档案馆</a>
+        </div>
+        <div class="nav-right">
+            <!-- 这里可以添加其他按钮 -->
+        </div>
+    </div>
 
+    <div class="container">
+        <h1>别克君威安全测试视频</h1>
+        
+        <!-- 说明区域 -->
+        <div class="info-section">
+            <h3 class="info-title">关于这些安全测试视频</h3>
+            <div class="info-content">
+                <p>这些视频展示了别克君威及其前身车型在NHTSA（美国国家公路交通安全管理局）和FMVSS（联邦机动车安全标准）301标准下进行的碰撞测试。通过这些测试，您可以了解别克车型在真实碰撞情况下的安全性能表现。</p>
+                <p>FMVSS 301标准主要测试车辆在遭受后部碰撞时的燃油系统完整性，确保在碰撞中燃油不会泄漏，减少火灾风险。</p>
+            </div>
+        </div>
+        
+        <!-- 视频区域 -->
+        <div class="videos-section">
+            <!-- 视频1 -->
+            <div class="video-card">
+                <h3 class="video-title">1998-2005 Buick Century/Regal 后部碰撞测试 (50 MPH)</h3>
+                <div class="video-container">
+                    <video controls poster="https://images.unsplash.com/photo-1549399542-7e82138a0d6c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80">
+                        <source src="https://regalmemory.github.io/1998-2005%20Buick%20Century⧸Regal%20FMVSS%20301%20Rear%20Crash%20Test%20(50%20Mph).mp4" type="video/mp4">
+                        您的浏览器不支持视频播放，请升级浏览器或下载视频。
+                    </video>
+                </div>
+                <div class="video-description">
+                    <p>FMVSS 301标准后部碰撞测试，测试速度50英里/小时，展示了别克世纪/君威在高速追尾碰撞中的燃油系统完整性表现。</p>
+                </div>
+            </div>
+            
+            <!-- 视频2 -->
+            <div class="video-card">
+                <h3 class="video-title">1986-1993 Buick Riviera 后部碰撞测试 (30 MPH)</h3>
+                <div class="video-container">
+                    <video controls poster="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80">
+                        <source src="https://regalmemory.github.io/1986-1993%20Buick%20Riviera%20FMVSS%20301%20Rear%20Crash%20Test%20(Full%20Overlap%20-%2030%20Mph).mp4" type="video/mp4">
+                        您的浏览器不支持视频播放，请升级浏览器或下载视频。
+                    </video>
+                </div>
+                <div class="video-description">
+                    <p>全重叠30英里/小时后部碰撞测试，展示了别克Riviera在FMVSS 301标准下的安全性能表现。</p>
+                </div>
+            </div>
+            
+            <!-- 视频3 -->
+            <div class="video-card">
+                <h3 class="video-title">别克世纪 NHTSA 碰撞测试</h3>
+                <div class="video-container">
+                    <video controls poster="https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80">
+                        <source src="https://regalmemory.github.io/Buick%20Century%20crash%20test%20NHTSA.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放，请升级浏览器或下载视频。
+                    </video>
+                </div>
+                <div class="video-description">
+                    <p>NHTSA官方碰撞测试视频，展示了别克世纪在各种碰撞场景下的安全性能。</p>
+                </div>
+            </div>
+            
+            <!-- 视频4 -->
+            <div class="video-card">
+                <h3 class="video-title">别克世纪碰撞测试 2</h3>
+                <div class="video-container">
+                    <video controls poster="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80">
+                        <source src="https://regalmemory.github.io/Buick%20Century%20Crush%202.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放，请升级浏览器或下载视频。
+                    </video>
+                </div>
+                <div class="video-description">
+                    <p>别克世纪碰撞测试第二部，详细展示了车辆在碰撞中的结构变形和乘员保护系统工作情况。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 捐赠区域 -->
+        <div class="donation-section">
+            <h2>支持作者创作</h2>
+            <a href="https://regalmemory.github.io/index.html" class="donation-btn">捐赠给作者</a>
+        </div>
+    </div>
+
+    <script>
+        // 处理视频加载错误
+        document.addEventListener('DOMContentLoaded', function() {
+            const videos = document.querySelectorAll('video');
+            
+            videos.forEach(video => {
+                video.addEventListener('error', function() {
+                    console.log(`视频加载失败: ${this.querySelector('source').src}`);
+                    const container = this.parentElement;
+                    container.innerHTML = `
+                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #2a2a2a; display: flex; justify-content: center; align-items: center; color: #999; border-radius: 8px; text-align: center; padding: 20px;">
+                            <div>
+                                <div style="font-size: 3rem; margin-bottom: 20px;">📹</div>
+                                <h3 style="color: #e0b43c; margin-bottom: 10px;">视频加载失败</h3>
+                                <p>无法加载视频文件，请检查网络连接或文件路径。</p>
+                                <p style="font-size: 0.8rem; margin-top: 10px; color: #777;">视频路径: ${this.querySelector('source').src}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+        });
+        
+        // 添加视频控制功能
+        function addVideoControls() {
+            const videos = document.querySelectorAll('video');
+            
+            videos.forEach(video => {
+                // 添加自定义控制
+                video.addEventListener('loadedmetadata', function() {
+                    console.log(`视频已加载: ${this.querySelector('source').src}, 时长: ${this.duration.toFixed(2)}秒`);
+                });
+                
+                video.addEventListener('play', function() {
+                    console.log(`视频开始播放: ${this.querySelector('source').src}`);
+                });
+                
+                video.addEventListener('pause', function() {
+                    console.log(`视频暂停: ${this.querySelector('source').src}`);
+                });
+            });
+        }
+        
+        // 页面加载完成后添加控制功能
+        window.addEventListener('load', addVideoControls);
+    </script>
+</body>
+</html>
