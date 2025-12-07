@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-     <meta charset="GB2312">
+    <meta charset="GB2312">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人机验证 - 访问控制</title>
+    <title>网站易主交易记录 - 人机验证</title>
     <link href="https://fonts.googleapis.com/css2?family=Microsoft+Sans+Serif:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* 完全复古的CSS */
@@ -453,482 +453,49 @@
             border: 2px inset #C0C0C0;
             text-align: center;
         }
-    </style>
-</head>
-<body>
-    <!-- CRT显示器边框 -->
-    <div class="crt-frame"></div>
-    
-    <!-- 验证主窗口 -->
-    <div class="verification-window">
-        <div class="window-title-bar">
-            <span>🔒 人机验证系统 v2.31</span>
-            <div class="window-buttons">
-                <div class="window-button" title="最小化">_</div>
-                <div class="window-button" title="最大化">□</div>
-                <div class="window-button" title="关闭" id="close-button">×</div>
-            </div>
-        </div>
         
-        <div class="window-content">
-            <!-- 验证标题 -->
-            <div class="verification-title">
-                <h1>⚠️ 人机验证 ⚠️</h1>
-                <p>检测到异常访问行为，请完成验证以继续</p>
-            </div>
-            
-            <!-- 验证码显示 -->
-            <div class="captcha-display" id="captcha-display">
-                <!-- 验证码将通过JS动态生成 -->
-            </div>
-            
-            <!-- 验证问题 -->
-            <div class="verification-question">
-                <div class="question-text">
-                    请在下方输入框中输入上方显示的验证码：
-                </div>
-                
-                <div class="retro-input-group">
-                    <label class="retro-label">验证码输入：</label>
-                    <input type="text" 
-                           class="retro-input" 
-                           id="captcha-input" 
-                           maxlength="6"
-                           placeholder="请输入6位验证码..."
-                           autocomplete="off">
-                </div>
-            </div>
-            
-            <!-- 进度条 -->
-            <div class="retro-progress">
-                <div class="progress-bar" id="progress-bar"></div>
-            </div>
-            
-            <!-- 尝试次数显示 -->
-            <div class="attempts-counter" id="attempts-counter">
-                尝试次数: <span id="attempts-left">3</span>/3
-            </div>
-            
-            <!-- 错误信息 -->
-            <div class="retro-error" id="error-message">
-                验证码错误！请重新输入。
-            </div>
-            
-            <!-- 按钮 -->
-            <div class="button-container">
-                <button class="retro-button button-primary" id="verify-button">
-                    ✅ 验证
-                </button>
-                <button class="retro-button" id="refresh-button">
-                    🔄 刷新验证码
-                </button>
-            </div>
-            
-            <!-- 加载动画 -->
-            <div class="retro-loading" id="loading-animation">
-                正在验证<span class="loading-dots"></span>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 警告弹窗 -->
-    <div class="retro-alert" id="final-alert">
-        <div class="window-title-bar">
-            <span>⚠️ 验证失败 ⚠️</span>
-            <div class="window-buttons">
-                <div class="window-button" onclick="closeAlert()">×</div>
-            </div>
-        </div>
-        <div class="alert-content">
-            <p style="font-size: 16px; font-weight: bold; color: #800000; margin-bottom: 15px;">
-                验证失败！
-            </p>
-            <p style="margin-bottom: 15px;">
-                您已连续3次验证失败，将被重定向到鸣谢页面。
-            </p>
-            <p style="color: #666; font-size: 12px; margin-bottom: 20px;">
-                重定向倒计时: <span id="redirect-timer">5</span>秒
-            </p>
-            <button class="retro-button button-primary" onclick="redirectNow()">
-                立即跳转
-            </button>
-        </div>
-    </div>
-    
-    <!-- 像素覆盖层 -->
-    <div class="pixel-overlay"></div>
-
-    <script>
-        // 复古音效
-        const playSound = (type) => {
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.type = 'square';
-                
-                if (type === 'click') {
-                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-                } else if (type === 'error') {
-                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                } else if (type === 'success') {
-                    oscillator.frequency.setValueAtTime(1200, audioContext.currentTime);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-                }
-                
-                oscillator.start();
-                oscillator.stop(audioContext.currentTime + 0.5);
-            } catch (e) {
-                console.log('音效播放失败:', e);
-            }
-        };
-        
-        // 验证码生成
-        const generateCaptcha = () => {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
-            let captcha = '';
-            for (let i = 0; i < 6; i++) {
-                captcha += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return captcha;
-        };
-        
-        // 状态变量
-        let currentCaptcha = '';
-        let attemptsLeft = 3;
-        let verificationInProgress = false;
-        
-        // DOM元素
-        const captchaDisplay = document.getElementById('captcha-display');
-        const captchaInput = document.getElementById('captcha-input');
-        const verifyButton = document.getElementById('verify-button');
-        const refreshButton = document.getElementById('refresh-button');
-        const errorMessage = document.getElementById('error-message');
-        const loadingAnimation = document.getElementById('loading-animation');
-        const attemptsLeftSpan = document.getElementById('attempts-left');
-        const progressBar = document.getElementById('progress-bar');
-        const finalAlert = document.getElementById('final-alert');
-        const redirectTimer = document.getElementById('redirect-timer');
-        
-        // 更新验证码显示
-        const updateCaptchaDisplay = () => {
-            currentCaptcha = generateCaptcha();
-            
-            // 创建复古显示效果
-            let displayHTML = '';
-            for (let i = 0; i < currentCaptcha.length; i++) {
-                // 为每个字符添加随机颜色和轻微偏移
-                const colors = ['#0F0', '#0FF', '#FF0', '#F0F'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                const offset = (Math.random() * 4 - 2) + 'px';
-                displayHTML += `<span style="color:${color}; display:inline-block; transform:translateY(${offset});">${currentCaptcha.charAt(i)}</span>`;
-            }
-            
-            captchaDisplay.innerHTML = displayHTML;
-            
-            // 添加噪点效果
-            setTimeout(() => {
-                captchaDisplay.style.textShadow = `
-                    0 0 5px #0F0,
-                    0 0 10px #0F0,
-                    0 0 15px #0F0
-                `;
-            }, 100);
-        };
-        
-        // 更新进度条
-        const updateProgressBar = () => {
-            const progress = ((3 - attemptsLeft) / 3) * 100;
-            progressBar.style.width = `${progress}%`;
-            
-            // 根据尝试次数改变颜色
-            if (attemptsLeft === 3) {
-                progressBar.style.background = 'linear-gradient(90deg, #000080, #1084D0)';
-            } else if (attemptsLeft === 2) {
-                progressBar.style.background = 'linear-gradient(90deg, #FF9900, #FF6600)';
-            } else if (attemptsLeft === 1) {
-                progressBar.style.background = 'linear-gradient(90deg, #FF0000, #CC0000)';
-            }
-        };
-        
-        // 显示错误信息
-        const showError = (message) => {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            playSound('error');
-            
-            // 添加抖动效果
-            errorMessage.style.animation = 'none';
-            setTimeout(() => {
-                errorMessage.style.animation = 'errorShake 0.5s ease';
-            }, 10);
-            
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 3000);
-        };
-        
-        // 验证过程
-        const verifyCaptcha = () => {
-            if (verificationInProgress) return;
-            
-            const userInput = captchaInput.value.trim();
-            
-            // 检查输入是否为空
-            if (!userInput) {
-                showError('请输入验证码！');
-                return;
-            }
-            
-            // 检查长度
-            if (userInput.length !== 6) {
-                showError('验证码必须是6位字符！');
-                return;
-            }
-            
-            // 开始验证
-            verificationInProgress = true;
-            loadingAnimation.style.display = 'block';
-            verifyButton.disabled = true;
-            refreshButton.disabled = true;
-            
-            playSound('click');
-            
-            // 模拟网络延迟
-            setTimeout(() => {
-                // 检查验证码
-                if (userInput.toUpperCase() === currentCaptcha.toUpperCase()) {
-                    // 验证成功
-                    playSound('success');
-                    loadingAnimation.style.display = 'none';
-                    
-                    // 显示成功动画
-                    captchaDisplay.innerHTML = '<span style="color:#0F0;">✅ 验证成功！</span>';
-                    captchaDisplay.style.textShadow = '0 0 10px #0F0';
-                    
-                    // 禁用输入
-                    captchaInput.disabled = true;
-                    
-                    // 显示重定向信息
-                    setTimeout(() => {
-                        alert('验证成功！即将跳转到网站购买页面...');
-                        window.location.href = 'https://regalmemory.github.io/goumaiwangzhan.html?verified=true';
-                    }, 1000);
-                    
-                } else {
-                    // 验证失败
-                    attemptsLeft--;
-                    attemptsLeftSpan.textContent = attemptsLeft;
-                    updateProgressBar();
-                    
-                    loadingAnimation.style.display = 'none';
-                    verificationInProgress = false;
-                    verifyButton.disabled = false;
-                    refreshButton.disabled = false;
-                    
-                    // 清空输入框
-                    captchaInput.value = '';
-                    captchaInput.focus();
-                    
-                    // 更新验证码
-                    updateCaptchaDisplay();
-                    
-                    // 检查是否还有尝试次数
-                    if (attemptsLeft > 0) {
-                        showError(`验证码错误！您还有 ${attemptsLeft} 次尝试机会。`);
-                    } else {
-                        // 没有尝试次数了，显示最终警告
-                        finalAlert.style.display = 'block';
-                        startRedirectTimer();
-                    }
-                }
-            }, 1500 + Math.random() * 1000);
-        };
-        
-        // 重定向倒计时
-        let redirectCountdown = 5;
-        let redirectInterval;
-        
-        const startRedirectTimer = () => {
-            redirectTimer.textContent = redirectCountdown;
-            
-            redirectInterval = setInterval(() => {
-                redirectCountdown--;
-                redirectTimer.textContent = redirectCountdown;
-                
-                if (redirectCountdown <= 0) {
-                    redirectNow();
-                }
-            }, 1000);
-        };
-        
-        const redirectNow = () => {
-            clearInterval(redirectInterval);
-            window.location.href = 'https://regalmemory.github.io/r5.html';
-        };
-        
-        const closeAlert = () => {
-            finalAlert.style.display = 'none';
-            clearInterval(redirectInterval);
-            redirectNow();
-        };
-        
-        // 关闭按钮事件
-        document.getElementById('close-button').addEventListener('click', () => {
-            playSound('click');
-            if (confirm('确定要关闭验证窗口吗？')) {
-                window.location.href = 'https://regalmemory.github.io/r5.html';
-            }
-        });
-        
-        // 事件监听器
-        verifyButton.addEventListener('click', verifyCaptcha);
-        
-        refreshButton.addEventListener('click', () => {
-            if (!verificationInProgress) {
-                playSound('click');
-                updateCaptchaDisplay();
-                captchaInput.value = '';
-                captchaInput.focus();
-                
-                // 添加刷新动画
-                refreshButton.innerHTML = '⏳ 刷新中...';
-                refreshButton.disabled = true;
-                
-                setTimeout(() => {
-                    refreshButton.innerHTML = '🔄 刷新验证码';
-                    refreshButton.disabled = false;
-                }, 500);
-            }
-        });
-        
-        // 回车键提交
-        captchaInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !verificationInProgress) {
-                verifyCaptcha();
-            }
-        });
-        
-        // 初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            // 初始显示验证码
-            updateCaptchaDisplay();
-            updateProgressBar();
-            
-            // 添加打字机效果
-            const introText = "欢迎访问网站购买页面验证系统";
-            let i = 0;
-            const typeWriter = () => {
-                if (i < introText.length) {
-                    const title = document.querySelector('.verification-title p');
-                    if (title) {
-                        title.textContent += introText.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, 50);
-                    }
-                }
-            };
-            
-            setTimeout(typeWriter, 1000);
-            
-            // 添加一些复古的随机效果
-            setInterval(() => {
-                // 随机改变CRT边框颜色
-                const crtFrame = document.querySelector('.crt-frame');
-                const hue = Math.floor(Math.random() * 360);
-                crtFrame.style.boxShadow = 
-                    `0 0 50px hsl(${hue}, 100%, 50%, 0.3),
-                     inset 0 0 30px hsl(${hue}, 100%, 50%, 0.2)`;
-            }, 3000);
-            
-            // 自动聚焦输入框
-            setTimeout(() => {
-                captchaInput.focus();
-            }, 500);
-        });
-        
-        // 防止右键菜单
-        document.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            showError('右键菜单已禁用！');
-        });
-        
-        // 防止复制
-        document.addEventListener('copy', (e) => {
-            e.preventDefault();
-            showError('复制功能已禁用！');
-        });
-        
-        // 防止粘贴
-        captchaInput.addEventListener('paste', (e) => {
-            e.preventDefault();
-            showError('粘贴功能已禁用！');
-        });
-    </script>
-</body>
-</html>
-    <meta charset="GB2312">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>网站易主交易记录</title>
-    <link href="https://fonts.googleapis.com/css2?family=Microsoft+Sans+Serif:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* 验证页面样式保留，但隐藏 */
-        .verification-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #008080;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        
+        /* 验证成功页面 */
         .verification-success {
             display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background-color: #C0C0C0;
             border: 3px outset #C0C0C0;
             padding: 30px;
             text-align: center;
             max-width: 500px;
+            z-index: 5;
             animation: successAppear 1s ease-out;
         }
         
         @keyframes successAppear {
             from { 
                 opacity: 0;
-                transform: scale(0.8);
+                transform: translate(-50%, -50%) scale(0.8);
             }
             to { 
                 opacity: 1;
-                transform: scale(1);
+                transform: translate(-50%, -50%) scale(1);
             }
         }
         
-        /* 主页面样式 */
+        /* 网站购买主页面 - 初始隐藏 */
         .main-page {
             display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             min-height: 100vh;
             background-color: #008080;
             background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjMDA4MDgwIj48L3JlY3Q+PHBhdGggZD0iTTAgMGg2MHY2MEgweiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDA2MDYwIiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD48L3N2Zz4=');
-            position: relative;
             overflow-x: hidden;
+            z-index: 10;
         }
         
-        /* CRT效果 */
+        /* 主页面CRT效果 */
         .crt-effect {
             position: fixed;
             top: 0;
@@ -938,13 +505,8 @@
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
             background-size: 100% 4px;
             pointer-events: none;
-            z-index: 1;
+            z-index: 11;
             animation: scanline 8s linear infinite;
-        }
-        
-        @keyframes scanline {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 100%; }
         }
         
         /* 导航栏 */
@@ -981,7 +543,7 @@
             margin: 0 auto;
             padding: 80px 20px 40px;
             position: relative;
-            z-index: 2;
+            z-index: 12;
         }
         
         /* 复古标题 */
@@ -1045,36 +607,7 @@
             50% { transform: translateY(-10px); }
         }
         
-        .window-title-bar {
-            background: linear-gradient(to right, #000080, #1084D0);
-            color: #FFFFFF;
-            padding: 8px 15px;
-            font-weight: bold;
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px outset #C0C0C0;
-        }
-        
-        .window-buttons {
-            display: flex;
-            gap: 2px;
-        }
-        
-        .window-button {
-            width: 20px;
-            height: 18px;
-            background: #C0C0C0;
-            border: 1px outset #C0C0C0;
-            font-size: 11px;
-            text-align: center;
-            line-height: 16px;
-            cursor: pointer;
-            color: #000;
-        }
-        
-        .window-content {
+        .main-window-content {
             background-color: #FFFFFF;
             padding: 25px;
             border: 2px inset #C0C0C0;
@@ -1348,7 +881,7 @@
         }
         
         .retro-checkbox.checked {
-            background: #000080 url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZD0iTTEzLjg1IDMuMTVjLjIuMi4yLjUgMCAuN0w2LjMgMTEuM2MtLjIuMi0uNS4yLS43IDBMMi4xNSA3Ljg1Yy0uMi0uMi0uMi0uNSAwLS43cy41LS4yLjcgMEw1LjkgOS45bDYuOS02LjljLjItLjIuNS0uMi43IDB6IiBmaWxsPSIjRkZGRkZGIi8+PC9zdmc+') center/12px no-repeat;
+            background: #000080 url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZD0iTTEzLjg1IDMuMTVjLjIuMi4yLjUgMCAuN0w2LjMgMTEuM2MtLjIuMi0uNS4yLS43IDBMMi4xNSA3Ljg1Yy0uMi0uMi0uMi0uNSAwLS43cy41LS4yLjcgMEw1LjkgOS45bDYuOS02LjljLjItLjIuNS0uMi43IDB6IiBmaWxsPSIjRkZGRkZGIi8+PC9N2Zz4=') center/12px no-repeat;
         }
         
         .confirm-button {
@@ -1440,497 +973,81 @@
             right: 0;
             bottom: 0;
             pointer-events: none;
-            z-index: 1;
+            z-index: 13;
             background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyIDIiPjxjaXJjbGUgY3g9IjEiIGN5PSIxIiByPSIwLjUiIGZpbGw9InJnYmEoMCwyNTUsMCwwLjAyKSIvPjwvc3Zn');
             background-size: 5px 5px;
         }
     </style>
 </head>
 <body>
-    <!-- 验证页面 -->
-    <div id="verificationPage" class="verification-page">
-        <div class="verification-success" id="successMessage">
-            <div style="font-size: 48px; margin-bottom: 20px;">✅</div>
-            <h2 style="color: #000080; margin-bottom: 15px;">验证通过！</h2>
-            <p style="margin-bottom: 20px;">正在加载网站购买页面...</p>
-            <div style="width: 100%; height: 20px; background-color: #C0C0C0; border: 2px inset #C0C0C0; overflow: hidden;">
-                <div id="loadingBar" style="height: 100%; background: linear-gradient(90deg, #000080, #1084D0); width: 0%;"></div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 主页面 -->
-    <div id="mainPage" class="main-page">
-        <!-- CRT效果 -->
-        <div class="crt-effect"></div>
+    <!-- 验证页面（初始显示） -->
+    <div id="verificationPage">
+        <!-- CRT显示器边框 -->
+        <div class="crt-frame"></div>
         
-        <!-- 像素装饰 -->
-        <div class="pixel-decoration"></div>
-        
-        <!-- 返回按钮 -->
-        <div class="navbar">
-            <a href="https://regalmemory.github.io/r5.html" class="back-btn">
-                🔙 返回鸣谢页面
-            </a>
-        </div>
-        
-        <!-- 主要内容 -->
-        <div class="main-container">
-            <!-- 标题 -->
-            <div class="retro-title">
-                <h1>🚗 别克君威网站易主交易记录 🚗</h1>
-                <p>历史所有权变更与购买信息</p>
-            </div>
-            
-            <!-- 双窗口布局 -->
-            <div class="windows-container">
-                <!-- 左窗口：交易记录 -->
-                <div class="retro-window">
-                    <div class="window-title-bar">
-                        <span>📜 历史交易记录</span>
-                        <div class="window-buttons">
-                            <div class="window-button">_</div>
-                            <div class="window-button">□</div>
-                            <div class="window-button">×</div>
-                        </div>
-                    </div>
-                    <div class="window-content">
-                        <div class="transaction-record">
-                            <!-- 交易记录1 -->
-                            <div class="transaction-item" style="animation-delay: 0.1s;">
-                                <div class="transaction-year">1989</div>
-                                <div class="transaction-title">华同方</div>
-                                <div class="transaction-details">
-                                    中标网站10年的计算机程序设计权
-                                </div>
-                                <div class="transaction-amount">¥18,888</div>
-                            </div>
-                            
-                            <!-- 交易记录2 -->
-                            <div class="transaction-item" style="animation-delay: 0.3s;">
-                                <div class="transaction-year">1999</div>
-                                <div class="transaction-title">华同方</div>
-                                <div class="transaction-details">
-                                    从上汽通用买下网站所有权
-                                </div>
-                                <div class="transaction-amount">¥2,888</div>
-                            </div>
-                            
-                            <!-- 交易记录3 -->
-                            <div class="transaction-item" style="animation-delay: 0.5s;">
-                                <div class="transaction-year">2008</div>
-                                <div class="transaction-title">知足常乐</div>
-                                <div class="transaction-details">
-                                    买下到2017年的网站设计权
-                                </div>
-                                <div class="transaction-amount">¥1,999</div>
-                            </div>
-                            
-                            <!-- 交易记录4 -->
-                            <div class="transaction-item" style="animation-delay: 0.7s;">
-                                <div class="transaction-year">2018</div>
-                                <div class="transaction-title">人到无求品自高</div>
-                                <div class="transaction-details">
-                                    从华同方处购买网站所有权
-                                </div>
-                                <div class="transaction-amount">¥3,600</div>
-                            </div>
-                            
-                            <!-- 交易记录5 -->
-                            <div class="transaction-item" style="animation-delay: 0.9s;">
-                                <div class="transaction-year">2024</div>
-                                <div class="transaction-title">flamezingel</div>
-                                <div class="transaction-details">
-                                    以每月300元维护网站至今
-                                </div>
-                                <div class="transaction-amount">¥300/月</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 右窗口：购买联系 -->
-                <div class="retro-window">
-                    <div class="window-title-bar">
-                        <span>💰 网站购买事宜</span>
-                        <div class="window-buttons">
-                            <div class="window-button">_</div>
-                            <div class="window-button">□</div>
-                            <div class="window-button">×</div>
-                        </div>
-                    </div>
-                    <div class="window-content">
-                        <div class="purchase-section">
-                            <div class="purchase-icon">💼</div>
-                            <div class="purchase-title">
-                                网站所有权转让
-                            </div>
-                            <div class="purchase-description">
-                                别克君威纪念网站现接受购买咨询。<br>
-                                包含完整网站源代码、设计文档、历史资料及所有相关权益。
-                            </div>
-                            <button id="contactButton" class="retro-big-button">
-                                📞 联系面谈网站购买事宜
-                            </button>
-                            
-                            <!-- 价格标签动画 -->
-                            <div style="margin-top: 30px; color: #666; font-size: 12px;">
-                                <div style="display: inline-block; animation: priceTag 3s ease-in-out infinite;">
-                                    💰 价格面议 💰
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 页脚 -->
-            <div class="retro-footer">
-                <p>© 1989-2024 别克君威纪念网站 版权所有</p>
-                <p>本页面模拟1990年代网页设计风格，用于历史展示目的</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 申明模态框 -->
-    <div id="declarationModal" class="modal-overlay">
-        <div class="modal-window">
+        <!-- 验证主窗口 -->
+        <div class="verification-window">
             <div class="window-title-bar">
-                <span>⚠️ 重要声明</span>
+                <span>🔒 人机验证系统 v2.31</span>
                 <div class="window-buttons">
-                    <div class="window-button" onclick="closeModal('declarationModal')">×</div>
+                    <div class="window-button" title="最小化">_</div>
+                    <div class="window-button" title="最大化">□</div>
+                    <div class="window-button" title="关闭" id="close-button">×</div>
                 </div>
             </div>
-            <div class="modal-content">
-                <div class="declaration-content">
-                    <div class="declaration-title">网站交易声明与须知</div>
-                    
-                    <div class="declaration-text">
-                        <p>尊敬的潜在购买者：</p>
-                        <p>在您考虑购买别克君威纪念网站之前，请仔细阅读以下重要声明。您的购买行为将被视为已完全理解并同意本声明的所有条款。</p>
+            
+            <div class="window-content">
+                <!-- 验证标题 -->
+                <div class="verification-title">
+                    <h1>⚠️ 人机验证 ⚠️</h1>
+                    <p>检测到异常访问行为，请完成验证以继续</p>
+                </div>
+                
+                <!-- 验证码显示 -->
+                <div class="captcha-display" id="captcha-display">
+                    <!-- 验证码将通过JS动态生成 -->
+                </div>
+                
+                <!-- 验证问题 -->
+                <div class="verification-question">
+                    <div class="question-text">
+                        请在下方输入框中输入上方显示的验证码：
                     </div>
                     
-                    <div class="declaration-clause">
-                        <strong>第一条 交易性质</strong><br>
-                        本交易涉及网站的全部所有权、知识产权及相关权益的转让。包括但不限于：域名使用权、网站源代码、设计文件、数据库内容、历史资料及所有相关数字资产。
-                    </div>
-                    
-                    <div class="declaration-clause">
-                        <strong>第二条 不可退还条款</strong><br>
-                        网站一旦售出，不得退还。购买者应在交易前进行充分了解和评估。卖方对网站的功能完整性、技术状态及历史准确性不做任何明示或暗示的保证。
-                    </div>
-                    
-                    <div class="declaration-clause">
-                        <strong>第三条 购买流程</strong><br>
-                        1. 初步意向咨询<br>
-                        2. 签署购买意向书<br>
-                        3. 技术资料交接与审查<br>
-                        4. 签订正式转让协议<br>
-                        5. 支付交易款项<br>
-                        6. 完成所有权转移
-                    </div>
-                    
-                    <div class="declaration-clause">
-                        <strong>第四条 价格与支付</strong><br>
-                        网站转让价格为面议确定，可能参考历史交易记录但不以此为限。支付方式需双方协商确定，建议采用银行转账或第三方托管支付。
-                    </div>
-                    
-                    <div class="declaration-clause">
-                        <strong>第五条 联系与咨询</strong><br>
-                        所有购买事宜请直接联系网站当前维护者。建议使用正式联系方式进行沟通，以便记录和交流相关信息。
-                    </div>
-                    
-                    <div class="declaration-text">
-                        <p>本声明的解释权归网站所有者所有。如有任何疑问，请在继续前联系网站维护者获取澄清。</p>
-                    </div>
-                    
-                    <div class="law-firm">
-                        上海东一律师事务所<br>
-                        法律顾问审核
+                    <div class="retro-input-group">
+                        <label class="retro-label">验证码输入：</label>
+                        <input type="text" 
+                               class="retro-input" 
+                               id="captcha-input" 
+                               maxlength="6"
+                               placeholder="请输入6位验证码..."
+                               autocomplete="off">
                     </div>
                 </div>
                 
-                <!-- 阅读确认区域 -->
-                <div class="read-confirm">
-                    <div class="confirm-checkbox">
-                        <div id="declarationCheckbox" class="retro-checkbox" onclick="toggleCheckbox(this)"></div>
-                        <label for="declarationCheckbox" style="cursor: pointer;">
-                            <strong>我已仔细阅读并完全理解上述声明内容</strong>
-                        </label>
-                    </div>
-                    <button id="confirmButton" class="confirm-button" onclick="showEmailModal()">
-                        我已阅读，继续
+                <!-- 进度条 -->
+                <div class="retro-progress">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                
+                <!-- 尝试次数显示 -->
+                <div class="attempts-counter" id="attempts-counter">
+                    尝试次数: <span id="attempts-left">3</span>/3
+                </div>
+                
+                <!-- 错误信息 -->
+                <div class="retro-error" id="error-message">
+                    验证码错误！请重新输入。
+                </div>
+                
+                <!-- 按钮 -->
+                <div class="button-container">
+                    <button class="retro-button button-primary" id="verify-button">
+                        ✅ 验证
+                    </button>
+                    <button class="retro-button" id="refresh-button">
+                        🔄 刷新验证码
                     </button>
                 </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 邮箱模态框 -->
-    <div id="emailModal" class="modal-overlay email-modal">
-        <div class="modal-window">
-            <div class="window-title-bar">
-                <span>📧 联系方式</span>
-                <div class="window-buttons">
-                    <div class="window-button" onclick="closeModal('emailModal')">×</div>
-                </div>
-            </div>
-            <div class="modal-content">
-                <div style="font-size: 36px; margin-bottom: 20px;">📨</div>
-                <h2 style="color: #000080; margin-bottom: 15px;">联系网站维护者</h2>
-                <p>请通过以下邮箱地址联系网站当前维护者：</p>
                 
-                <div id="emailAddress" class="email-address" onclick="copyEmail()">
-                    jw.31119@yahoo.com
-                </div>
-                <div id="emailCopied" class="email-copied">
-                    ✅ 邮箱地址已复制到剪贴板！
-                </div>
-                
-                <div style="margin: 20px 0; color: #666;">
-                    <p>推荐使用此邮箱地址联系，以便获得更快的回复。</p>
-                </div>
-                
-                <div class="email-buttons">
-                    <button class="retro-button button-primary" onclick="openEmailApp()">
-                        📤 打开邮件应用
-                    </button>
-                    <button class="retro-button" onclick="closeModal('emailModal')">
-                        ✖ 关闭
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // 模拟验证成功并加载主页面
-        document.addEventListener('DOMContentLoaded', function() {
-            // 检查URL参数，如果已验证则直接显示主页面
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('verified') && urlParams.get('verified') === 'true') {
-                showMainPage();
-            } else {
-                // 模拟验证成功动画
-                setTimeout(() => {
-                    const successMessage = document.getElementById('successMessage');
-                    successMessage.style.display = 'block';
-                    
-                    // 加载条动画
-                    const loadingBar = document.getElementById('loadingBar');
-                    let width = 0;
-                    const loadingInterval = setInterval(() => {
-                        width += 5;
-                        loadingBar.style.width = width + '%';
-                        
-                        if (width >= 100) {
-                            clearInterval(loadingInterval);
-                            setTimeout(showMainPage, 500);
-                        }
-                    }, 50);
-                }, 1000);
-            }
-        });
-        
-        function showMainPage() {
-            const verificationPage = document.getElementById('verificationPage');
-            const mainPage = document.getElementById('mainPage');
-            
-            // 淡出验证页面
-            verificationPage.style.opacity = '0';
-            verificationPage.style.transition = 'opacity 1s ease';
-            
-            setTimeout(() => {
-                verificationPage.style.display = 'none';
-                mainPage.style.display = 'block';
-                
-                // 添加一些复古效果
-                addFloatingElements();
-                startPixelAnimation();
-            }, 1000);
-        }
-        
-        // 声明模态框功能
-        document.getElementById('contactButton').addEventListener('click', function() {
-            openModal('declarationModal');
-            resetDeclarationScroll();
-        });
-        
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-        }
-        
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-        
-        // 声明滚动检测
-        let declarationRead = false;
-        
-        function resetDeclarationScroll() {
-            declarationRead = false;
-            const checkbox = document.getElementById('declarationCheckbox');
-            const confirmButton = document.getElementById('confirmButton');
-            
-            checkbox.classList.remove('checked');
-            confirmButton.classList.remove('enabled');
-            
-            // 滚动到顶部
-            const content = document.querySelector('.modal-content');
-            content.scrollTop = 0;
-            
-            // 添加滚动监听
-            content.addEventListener('scroll', checkDeclarationScroll);
-        }
-        
-        function checkDeclarationScroll() {
-            const content = document.querySelector('.modal-content');
-            const scrollBottom = content.scrollHeight - content.scrollTop - content.clientHeight;
-            
-            // 如果滚动到底部
-            if (scrollBottom < 10) {
-                declarationRead = true;
-                content.removeEventListener('scroll', checkDeclarationScroll);
-            }
-        }
-        
-        function toggleCheckbox(checkbox) {
-            if (declarationRead) {
-                checkbox.classList.toggle('checked');
-                const confirmButton = document.getElementById('confirmButton');
-                
-                if (checkbox.classList.contains('checked')) {
-                    confirmButton.classList.add('enabled');
-                } else {
-                    confirmButton.classList.remove('enabled');
-                }
-            } else {
-                // 如果还没阅读到底部，显示提示
-                alert('请先阅读完整个声明内容！');
-            }
-        }
-        
-        // 显示邮箱模态框
-        function showEmailModal() {
-            if (document.getElementById('declarationCheckbox').classList.contains('checked')) {
-                closeModal('declarationModal');
-                setTimeout(() => {
-                    openModal('emailModal');
-                }, 300);
-            }
-        }
-        
-        // 复制邮箱功能
-        function copyEmail() {
-            const email = 'jw.31119@yahoo.com';
-            const emailCopied = document.getElementById('emailCopied');
-            
-            // 使用现代API复制到剪贴板
-            navigator.clipboard.writeText(email).then(() => {
-                emailCopied.style.display = 'block';
-                setTimeout(() => {
-                    emailCopied.style.display = 'none';
-                }, 3000);
-            }).catch(err => {
-                // 备用方法
-                const textArea = document.createElement('textarea');
-                textArea.value = email;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                emailCopied.style.display = 'block';
-                setTimeout(() => {
-                    emailCopied.style.display = 'none';
-                }, 3000);
-            });
-        }
-        
-        // 打开邮件应用
-        function openEmailApp() {
-            const email = 'jw.31119@yahoo.com';
-            const subject = '别克君威网站购买咨询';
-            const body = '尊敬的网站维护者：\n\n我对别克君威网站的购买事宜感兴趣，希望了解更多信息。\n\n联系方式：\n\n[请在此处填写您的联系方式]\n\n此致\n敬礼';
-            
-            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            
-            // 打开邮件应用
-            window.location.href = mailtoLink;
-            
-            // 延迟跳转到鸣谢页面
-            setTimeout(() => {
-                window.location.href = 'https://regalmemory.github.io/r5.html';
-            }, 1000);
-        }
-        
-        // 复古效果：添加漂浮元素
-        function addFloatingElements() {
-            const elements = ['💻', '💾', '📀', '🖥️', '💿', '📼', '🖱️', '⌨️'];
-            const container = document.querySelector('.main-page');
-            
-            for (let i = 0; i < 15; i++) {
-                const element = document.createElement('div');
-                element.textContent = elements[Math.floor(Math.random() * elements.length)];
-                element.style.position = 'fixed';
-                element.style.left = Math.random() * 100 + '%';
-                element.style.top = Math.random() * 100 + '%';
-                element.style.fontSize = Math.random() * 24 + 16 + 'px';
-                element.style.opacity = Math.random() * 0.3 + 0.1;
-                element.style.zIndex = '0';
-                element.style.pointerEvents = 'none';
-                element.style.animation = `float ${Math.random() * 10 + 10}s ease-in-out infinite`;
-                element.style.animationDelay = Math.random() * 5 + 's';
-                
-                container.appendChild(element);
-            }
-            
-            // 添加浮动动画
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes float {
-                    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-                    25% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(90deg); }
-                    50% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(180deg); }
-                    75% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(270deg); }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
-        // 像素动画效果
-        function startPixelAnimation() {
-            const decoration = document.querySelector('.pixel-decoration');
-            let hue = 0;
-            
-            setInterval(() => {
-                hue = (hue + 1) % 360;
-                decoration.style.backgroundImage = `url('data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><circle cx="1" cy="1" r="0.5" fill="hsla(${hue}, 100%, 50%, 0.02)"/></svg>`)}')`;
-            }, 100);
-        }
-        
-        // 价格标签动画
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes priceTag {
-                0%, 100% { transform: scale(1); opacity: 0.8; }
-                50% { transform: scale(1.1); opacity: 1; }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // 复古音效
-        function playRetroSound(type) {
-            // 这里可以添加复古音效
-            console.log(`播放${type}音效`);
-        }
-        
-        // 为所有按钮添加点击音效
-        document.addEventListener('click', function(e) {
-            if (e.target.tagName === 'BUTTON' || e.target.classList.contains('window-button')) {
-                playRetroSound('click');
-            }
-        });
-    </script>
-</body>
-</html>
+                <!-- 加载
