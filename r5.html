@@ -444,23 +444,23 @@
 <body>
     <!-- 复古访问计数器 -->
     <div class="visitor-counter">
-        访问次数: <span id="counter">000042</span>
+        Buffer Visitor: <span id="counter">000042</span>
     </div>
     
     <!-- 导航栏 -->
     <div class="navbar retro-border">
         <div class="nav-left">
-            <a href="https://regalmemory.github.io/index.html" class="nav-btn">🏠 主页</a>
-            <a href="https://regalmemory.github.io/archive.html" class="nav-btn">📁 档案馆</a>
+            <a href="https://regalmemory.github.io/index.html" class="nav-btn"> 主页</a>
+            <a href="https://regalmemory.github.io/archive.html" class="nav-btn"> 档案馆</a>
         </div>
         <div class="nav-right">
-            <button class="nav-btn" onclick="openFeedback()">💌 反馈意见</button>
+            <button class="nav-btn" onclick="openFeedback()"> 反馈意见</button>
         </div>
     </div>
     
     <!-- 跑马灯 -->
     <div class="marquee">
-        <span>✨ 欢迎来到别克君威鸣谢页面！本页面采用1990-2000年代怀旧风格设计 ✨ 建议使用IE 5.0以上浏览器获得最佳浏览体验 ✨</span>
+        <span> 欢迎来到别克君威鸣谢页面！  建议使用IE 5.0以上浏览器获得最佳浏览体验 本页面保留了最初的设计</span>
     </div>
     
     <div class="container">
@@ -480,12 +480,12 @@
                 
                 <!-- 施工中动画占位符 -->
                 <div class="construction-gif">
-                    网页正在建设中... 最后更新: 1999年12月31日
+                    网页正在建设中... 最后更新: 2025年12月
                 </div>
                 
                 <!-- 维护者信息 -->
                 <div class="maintainers">
-                    <h2>📅 历史维护者</h2>
+                    <h2> 历史维护者</h2>
                     
                     <div class="maintainer-card">
                         <div class="maintainer-title">第一阶段：1999-2008年</div>
@@ -500,6 +500,7 @@
                         <div class="maintainer-name">👤 维护者：知足常乐</div>
                         <div class="maintainer-contact">
                             📞 联系方式：5544642
+                            💡 备注：提供了大量的素材，江浙沪著名工程师
                         </div>
                     </div>
                     
@@ -523,25 +524,25 @@
                 
                 <!-- 反馈建议 -->
                 <div class="feedback-section">
-                    <h2>💡 反馈与建议</h2>
+                    <h2> 反馈与建议</h2>
                     <p>您的反馈对我们非常重要！请通过以下方式联系我们：</p>
                     <div class="maintainer-contact" style="margin: 15px 0;">
                         <strong>推荐联系方式：</strong><br>
-                        📧 邮箱：jw.31119@yahoo.com<br>
-                        📱 Signal: https://signal.me/#eu/5doDi0-10265vcVuH2BNV4YK_cg76cPJ-lAiGORD6FZa6PZ600NKNL3rhdD4t6JA
+                         邮箱：jw.31119@yahoo.com<br>
+                         Signal: https://signal.me/#eu/5doDi0-10265vcVuH2BNV4YK_cg76cPJ-lAiGORD6FZa6PZ600NKNL3rhdD4t6JA
                     </div>
                     <p>使用以上联系方式反馈，可以得到更快的改进和更好的回复。</p>
                     <button class="retro-button" onclick="openFeedback()">
-                        📝 点击这里填写在线反馈表
+                         点击这里填写在线反馈表
                     </button>
                 </div>
                 
                 <!-- 网站易主交易记录 -->
                 <div class="trade-section">
-                    <h2>🏷️ 网站易主交易记录</h2>
+                    <h2> 网站易主交易记录</h2>
                     <p>了解网站所有权变更历史，或洽谈购买事宜</p>
                     <a href="https://regalmemory.github.io/goumaiwangzhan.html" class="trade-button">
-                        💰 网站易主交易记录/购买网站
+                         网站易主交易记录/购买网站
                     </a>
                 </div>
             </div>
@@ -552,7 +553,7 @@
     <div class="modal" id="feedback-modal">
         <div class="modal-window">
             <div class="modal-title-bar">
-                <span>📝 反馈意见表</span>
+                <span> 反馈意见表</span>
                 <div class="window-buttons">
                     <div class="window-button" onclick="closeModal('feedback-modal')">×</div>
                 </div>
@@ -576,10 +577,10 @@
                     
                     <div style="text-align: center; margin-top: 20px;">
                         <button type="submit" class="retro-button" style="padding: 10px 30px;">
-                            📤 提交反馈
+                            Submit 提交反馈
                         </button>
                         <button type="button" class="retro-button" onclick="closeModal('feedback-modal')" style="background: linear-gradient(to bottom, #FF9999, #CC6666);">
-                            ❌ 取消
+                            Discard 取消
                         </button>
                     </div>
                 </form>
@@ -623,7 +624,7 @@
                 const originalText = submitBtn.innerHTML;
                 
                 // 显示提交中状态
-                submitBtn.innerHTML = '⏳ 提交中...';
+                submitBtn.innerHTML = '⏳ Подключение...';
                 submitBtn.disabled = true;
                 
                 try {
@@ -637,8 +638,8 @@
                     
                     if (response.ok) {
                         // 提交成功
-                        submitBtn.innerHTML = '✅ 提交成功！';
-                        alert('感谢您的反馈！我们会尽快处理。');
+                        submitBtn.innerHTML = 'Отправка успешна 提交成功！';
+                        alert('Спасибо за ваш отзыв 感谢您的反馈！我们会尽快处理。');
                         closeModal('feedback-modal');
                         form.reset();
                         
@@ -663,7 +664,7 @@
                     const mailtoLink = `mailto:jw.31119@yahoo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                     
                     // 提示用户手动发送邮件
-                    submitBtn.innerHTML = '📧 准备邮箱';
+                    submitBtn.innerHTML = ' 准备邮箱';
                     alert('自动提交失败，请点击确定后手动发送邮件。');
                     
                     // 打开用户的邮件客户端
