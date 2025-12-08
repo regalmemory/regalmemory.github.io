@@ -67,19 +67,68 @@
             text-shadow: 3px 3px 0 #000080;
         }
         
-        .loading-text {
+        .loading-header {
             color: #FFFFFF;
-            font-size: 16px;
-            margin-bottom: 10px;
+            font-size: 18px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .loading-subheader {
+            color: #C0C0C0;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .loading-info-container {
+            width: 400px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 2px ridge #C0C0C0;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .loading-info-item {
+            color: #FFFFFF;
+            font-size: 11px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .loading-info-label {
+            color: #C0C0C0;
+        }
+        
+        .loading-info-value {
+            color: #FFFF00;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .security-check {
+            color: #00FF00;
+            font-size: 12px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        .progress-info {
+            color: #C0C0C0;
+            font-size: 11px;
+            margin: 5px 0;
+            font-style: italic;
         }
         
         .loading-progress-container {
-            width: 300px;
+            width: 400px;
             height: 20px;
-            background-color: #C0C0C0;
-            border: 2px inset #C0C0C0;
-            margin: 20px 0;
+            background-color: #000000;
+            border: 2px inset #000080;
+            margin: 15px 0;
             overflow: hidden;
+            position: relative;
         }
         
         .loading-progress-bar {
@@ -88,7 +137,34 @@
             background-size: 200% 100%;
             animation: progressShine 2s linear infinite;
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 #000;
+            z-index: 1;
+        }
+        
+        .progress-bar-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.3) 50%, 
+                transparent 100%);
+            animation: innerShine 2s infinite;
         }
         
         .trouble-link {
@@ -96,13 +172,20 @@
             text-decoration: underline;
             cursor: pointer;
             font-size: 14px;
-            margin-top: 20px;
+            margin-top: 15px;
             display: none;
             animation: blink 1s infinite;
         }
         
         .trouble-link:hover {
             color: #FF9900;
+        }
+        
+        .loading-time-estimate {
+            color: #C0C0C0;
+            font-size: 10px;
+            margin-top: 5px;
+            font-style: italic;
         }
         
         @keyframes pulse {
@@ -113,6 +196,11 @@
         @keyframes progressShine {
             0% { background-position: 200% 0; }
             100% { background-position: 0 0; }
+        }
+        
+        @keyframes innerShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         
         @keyframes blink {
@@ -663,6 +751,11 @@
                 justify-content: center;
             }
             
+            .loading-info-container,
+            .loading-progress-container {
+                width: 90%;
+            }
+            
             .verification-window {
                 width: 90%;
             }
@@ -697,10 +790,45 @@
     <!-- 加载页面 -->
     <div class="loading-page" id="loadingPage">
         <div class="loading-logo">🚗</div>
-        <div class="loading-text">正在加载网站购买页面...</div>
-        <div class="loading-progress-container">
-            <div class="loading-progress-bar" id="loadingProgressBar"></div>
+        <div class="loading-header">正在加载 regalmemory.github.io</div>
+        <div class="loading-subheader">在继续之前，regalmemory.github.io 要检查您连接的安全性</div>
+        
+        <div class="loading-info-container">
+            <div class="security-check" id="securityCheck">
+                🔒 正在验证连接安全性...
+            </div>
+            
+            <div class="loading-info-item">
+                <span class="loading-info-label">连接状态:</span>
+                <span class="loading-info-value" id="connectionStatus">初始化...</span>
+            </div>
+            
+            <div class="loading-info-item">
+                <span class="loading-info-label">预计时间:</span>
+                <span class="loading-info-value" id="timeEstimate">计算中...</span>
+            </div>
+            
+            <div class="loading-info-item">
+                <span class="loading-info-label">当前阶段:</span>
+                <span class="loading-info-value" id="currentStage">准备加载</span>
+            </div>
         </div>
+        
+        <div class="progress-info" id="progressInfo">
+            正在建立安全连接，只要几秒钟...
+        </div>
+        
+        <div class="loading-progress-container">
+            <div class="loading-progress-bar" id="loadingProgressBar">
+                <div class="progress-bar-inner"></div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+        </div>
+        
+        <div class="loading-time-estimate" id="timeRemaining">
+            剩余时间：计算中...
+        </div>
+        
         <div class="trouble-link" id="troubleLink">
             遇到麻烦了？去反馈。
         </div>
@@ -901,10 +1029,13 @@
         let loadingTimeout = null;
         let loadingProgress = 0;
         let loadingSpeed = 0;
+        let totalLoadTime = 0;
+        let startTime = Date.now();
         
         // DOM元素
         const loadingPage = document.getElementById('loadingPage');
         const loadingProgressBar = document.getElementById('loadingProgressBar');
+        const progressText = document.getElementById('progressText');
         const troubleLink = document.getElementById('troubleLink');
         const verificationPage = document.getElementById('verificationPage');
         const verificationBox = document.getElementById('verificationBox');
@@ -913,67 +1044,179 @@
         const emailModal = document.getElementById('emailModal');
         const contactButton = document.getElementById('contactButton');
         
-        // 模拟网络速度检测和加载
+        // 信息显示元素
+        const securityCheck = document.getElementById('securityCheck');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const timeEstimate = document.getElementById('timeEstimate');
+        const currentStage = document.getElementById('currentStage');
+        const progressInfo = document.getElementById('progressInfo');
+        const timeRemaining = document.getElementById('timeRemaining');
+        
+        // 加载阶段配置
+        const loadStages = [
+            { name: '初始化连接', duration: 800, progress: 5, message: '正在建立初始连接...' },
+            { name: '验证安全性', duration: 1500, progress: 15, message: '🔒 检查连接安全性...' },
+            { name: 'DNS解析', duration: 1200, progress: 25, message: '正在解析域名...' },
+            { name: '建立SSL', duration: 1800, progress: 40, message: '🔐 建立安全连接...' },
+            { name: '获取资源', duration: 2000, progress: 60, message: '正在下载页面资源...' },
+            { name: '处理数据', duration: 1600, progress: 80, message: '正在处理数据...' },
+            { name: '准备显示', duration: 900, progress: 95, message: '准备显示页面...' },
+            { name: '完成', duration: 500, progress: 100, message: '✅ 连接就绪！' }
+        ];
+        
+        // 模拟网络速度检测
         function simulateNetworkSpeed() {
-            // 模拟网络速度检测（这里简化处理）
-            // 在真实环境中可以使用navigator.connection来检测
-            const speeds = [50, 80, 100, 200, 500]; // Mbps
-            loadingSpeed = speeds[Math.floor(Math.random() * speeds.length)];
+            // 模拟网络速度（真实环境中可以使用navigator.connection）
+            const speeds = [
+                { speed: 50, label: '慢 (50 Mbps)', baseTime: 13000 },
+                { speed: 80, label: '中等 (80 Mbps)', baseTime: 11000 },
+                { speed: 100, label: '快 (100 Mbps)', baseTime: 9000 },
+                { speed: 200, label: '很快 (200 Mbps)', baseTime: 7500 },
+                { speed: 500, label: '极快 (500 Mbps)', baseTime: 7000 }
+            ];
             
-            // 根据网速计算加载时间
-            let minLoadTime = 7000; // 最快7秒
-            let maxLoadTime = 13000; // 最慢13秒
+            const speedIndex = Math.floor(Math.random() * speeds.length);
+            const selectedSpeed = speeds[speedIndex];
+            loadingSpeed = selectedSpeed.speed;
             
-            if (loadingSpeed < 80) {
-                // 慢网速：10-13秒随机
-                minLoadTime = 10000;
-                maxLoadTime = 13000;
-            }
+            // 添加随机性 ±15%
+            const variation = 1 + (Math.random() * 0.3 - 0.15);
+            totalLoadTime = Math.floor(selectedSpeed.baseTime * variation);
             
-            return Math.floor(Math.random() * (maxLoadTime - minLoadTime + 1)) + minLoadTime;
+            // 更新界面显示
+            connectionStatus.textContent = selectedSpeed.label;
+            connectionStatus.style.color = loadingSpeed >= 100 ? '#00FF00' : 
+                                          loadingSpeed >= 80 ? '#FFFF00' : '#FF9900';
+            
+            // 更新预计时间
+            const seconds = Math.ceil(totalLoadTime / 1000);
+            timeEstimate.textContent = `${seconds} 秒`;
+            
+            return totalLoadTime;
         }
         
-        // 开始加载动画
-        function startLoading() {
-            const totalLoadTime = simulateNetworkSpeed();
-            const progressInterval = 100; // 更新进度条的间隔（毫秒）
-            const steps = totalLoadTime / progressInterval;
-            const increment = 100 / steps;
+        // 模拟真实的进度条
+        function simulateRealisticProgress() {
+            let currentStageIndex = 0;
+            let accumulatedProgress = 0;
             
             // 8秒后显示故障链接
             setTimeout(() => {
                 troubleLink.style.display = 'block';
             }, 8000);
             
-            // 更新进度条
-            const progressTimer = setInterval(() => {
-                loadingProgress += increment;
-                loadingProgressBar.style.width = loadingProgress + '%';
-                
-                if (loadingProgress >= 100) {
-                    clearInterval(progressTimer);
+            function runStage() {
+                if (currentStageIndex >= loadStages.length) {
                     finishLoading();
+                    return;
                 }
-            }, progressInterval);
+                
+                const stage = loadStages[currentStageIndex];
+                
+                // 更新阶段信息
+                currentStage.textContent = stage.name;
+                progressInfo.textContent = stage.message;
+                
+                if (stage.name === '验证安全性') {
+                    securityCheck.textContent = stage.message;
+                } else if (stage.name === '建立SSL') {
+                    securityCheck.textContent = stage.message;
+                } else if (stage.name === '完成') {
+                    securityCheck.textContent = '✅ 安全连接已建立';
+                    securityCheck.style.color = '#00FF00';
+                }
+                
+                // 计算该阶段持续时间（根据总加载时间调整）
+                const stageDuration = Math.floor((stage.duration / 10500) * totalLoadTime);
+                
+                // 模拟阶段内的进度变化
+                let stageProgress = 0;
+                const stageInterval = 100; // 更新间隔
+                const stageSteps = stageDuration / stageInterval;
+                const stageIncrement = (stage.progress - accumulatedProgress) / stageSteps;
+                
+                // 模拟网络波动
+                const fluctuation = 0.2; // 20%的波动
+                
+                const stageTimer = setInterval(() => {
+                    // 添加随机波动
+                    const randomFactor = 1 + (Math.random() * fluctuation * 2 - fluctuation);
+                    stageProgress += stageIncrement * randomFactor;
+                    
+                    // 确保不超出范围
+                    if (stageProgress > stage.progress - accumulatedProgress) {
+                        stageProgress = stage.progress - accumulatedProgress;
+                    }
+                    
+                    const currentProgress = Math.min(accumulatedProgress + stageProgress, 100);
+                    updateProgress(currentProgress);
+                    
+                    // 更新剩余时间
+                    const elapsed = Date.now() - startTime;
+                    const remaining = Math.max(0, totalLoadTime - elapsed);
+                    const remainingSeconds = Math.ceil(remaining / 1000);
+                    
+                    if (remainingSeconds <= 3) {
+                        timeRemaining.textContent = "剩余时间：几乎完成...";
+                    } else {
+                        timeRemaining.textContent = `剩余时间：约 ${remainingSeconds} 秒`;
+                    }
+                    
+                    // 阶段完成
+                    if (currentProgress >= stage.progress) {
+                        clearInterval(stageTimer);
+                        accumulatedProgress = stage.progress;
+                        currentStageIndex++;
+                        
+                        // 添加随机延迟，模拟网络思考时间
+                        const delay = Math.random() * 300 + 100;
+                        setTimeout(runStage, delay);
+                    }
+                }, stageInterval);
+            }
             
-            // 总加载时间后强制完成
+            runStage();
+            
+            // 总加载时间后强制完成（安全网）
             loadingTimeout = setTimeout(() => {
-                clearInterval(progressTimer);
-                loadingProgressBar.style.width = '100%';
+                updateProgress(100);
                 finishLoading();
-            }, totalLoadTime);
+            }, totalLoadTime + 2000);
+        }
+        
+        // 更新进度显示
+        function updateProgress(progress) {
+            loadingProgress = Math.min(Math.max(progress, 0), 100);
+            loadingProgressBar.style.width = loadingProgress + '%';
+            progressText.textContent = Math.floor(loadingProgress) + '%';
+            
+            // 根据进度改变颜色
+            if (loadingProgress < 30) {
+                loadingProgressBar.style.background = 'linear-gradient(90deg, #800000, #CC3333)';
+            } else if (loadingProgress < 70) {
+                loadingProgressBar.style.background = 'linear-gradient(90deg, #CC6600, #FF9900)';
+            } else {
+                loadingProgressBar.style.background = 'linear-gradient(90deg, #006600, #00CC00)';
+            }
         }
         
         // 完成加载
         function finishLoading() {
-            // 淡出加载页面
-            loadingPage.style.opacity = '0';
-            loadingPage.style.transition = 'opacity 0.5s ease';
+            // 确保进度到达100%
+            updateProgress(100);
+            progressInfo.textContent = "✅ 加载完成，准备验证...";
+            timeRemaining.textContent = "准备就绪！";
             
+            // 延迟后淡出加载页面
             setTimeout(() => {
-                loadingPage.style.display = 'none';
-                showVerificationPage();
-            }, 500);
+                loadingPage.style.opacity = '0';
+                loadingPage.style.transition = 'opacity 0.8s ease';
+                
+                setTimeout(() => {
+                    loadingPage.style.display = 'none';
+                    showVerificationPage();
+                }, 800);
+            }, 800);
         }
         
         // 显示验证页面
@@ -984,6 +1227,9 @@
             verificationBox.className = 'verification-box';
             verificationStatus.textContent = '等待验证...';
             verificationCompleted = false;
+            
+            // 设置验证开始时间
+            verificationStartTime = Date.now();
             
             // 重置验证框点击事件
             verificationBox.onclick = handleVerificationClick;
@@ -1006,6 +1252,9 @@
                 verificationStatus.textContent = '点击过快！请等待0.1秒后再点击。';
                 verificationStatus.style.color = '#800000';
                 
+                // 添加音效反馈
+                playErrorSound();
+                
                 // 2秒后重置
                 setTimeout(() => {
                     if (!verificationCompleted) {
@@ -1014,15 +1263,19 @@
                         verificationStatus.textContent = '等待验证...';
                         verificationStatus.style.color = '#666';
                         verificationBox.onclick = handleVerificationClick;
+                        verificationStartTime = Date.now(); // 重置开始时间
                     }
                 }, 2000);
             } else {
                 // 验证成功
                 verificationBox.textContent = '验证成功！';
                 verificationBox.className = 'verification-box success';
-                verificationStatus.textContent = '验证通过，正在进入网站...';
+                verificationStatus.textContent = '✅ 验证通过，正在进入网站...';
                 verificationStatus.style.color = '#008000';
                 verificationCompleted = true;
+                
+                // 添加成功音效
+                playSuccessSound();
                 
                 // 1秒后进入主页面
                 setTimeout(showMainPage, 1000);
@@ -1125,19 +1378,58 @@
             document.head.appendChild(style);
         }
         
-        // 复古音效
-        function playRetroSound(type) {
-            // 这里可以添加复古音效
-            console.log(`播放${type}音效`);
+        // 简单音效模拟
+        function playErrorSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(150, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                // 音效播放失败，静默处理
+            }
+        }
+        
+        function playSuccessSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 0.3);
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                // 音效播放失败，静默处理
+            }
         }
         
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function() {
-            // 开始加载过程
-            startLoading();
+            // 记录开始时间
+            startTime = Date.now();
             
-            // 设置验证框初始时间
-            verificationStartTime = Date.now();
+            // 模拟网络速度并开始加载
+            simulateNetworkSpeed();
+            simulateRealisticProgress();
             
             // 故障链接点击事件
             troubleLink.addEventListener('click', function() {
@@ -1147,10 +1439,10 @@
             // 购买按钮点击事件
             contactButton.addEventListener('click', showEmailModal);
             
-            // 为所有按钮添加点击音效
+            // 为所有按钮添加点击反馈
             document.addEventListener('click', function(e) {
                 if (e.target.tagName === 'BUTTON' || e.target.classList.contains('nav-btn')) {
-                    playRetroSound('click');
+                    // 可以添加按钮点击音效
                 }
             });
             
@@ -1160,8 +1452,10 @@
             });
             
             // 添加复古控制台日志
-            console.log('%c 🚗 别克君威网站易主交易记录 🚗', 'color: #FFFF00; font-size: 18px; font-weight: bold; text-shadow: 2px 2px 0 #000080;');
-            console.log('%c 页面加载速度: ' + loadingSpeed + ' Mbps (模拟)', 'color: #00FF00;');
+            console.log('%c 🚗 regalmemory.github.io 安全检查 🚗', 'color: #FFFF00; font-size: 18px; font-weight: bold; text-shadow: 2px 2px 0 #000080;');
+            console.log('%c 正在验证连接安全性...', 'color: #00FF00;');
+            console.log(`%c 模拟连接速度: ${loadingSpeed} Mbps`, 'color: #C0C0C0;');
+            console.log(`%c 预计加载时间: ${Math.ceil(totalLoadTime/1000)} 秒`, 'color: #C0C0C0;');
             console.log('%c © 1989-2024 别克君威纪念网站', 'color: #C0C0C0;');
         });
         
