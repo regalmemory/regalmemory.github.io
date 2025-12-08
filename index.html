@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-store"> <!-- 彻底禁用缓存 -->
+    <meta http-equiv="Cache-Control" content="no-store">
     <title>别克·君威时光档案馆</title>
     <style>
         body {
@@ -12,13 +12,12 @@
             font-family: "楷体", "STKaiti", serif;
             overflow: hidden;
             position: relative;
-            user-select: none; /* 禁用文本选择 */
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
         
-        /* 禁止图片拖拽 */
         img {
             -webkit-user-drag: none;
             -khtml-user-drag: none;
@@ -27,7 +26,6 @@
             user-drag: none;
         }
         
-        /* 跑马灯样式 */
         .marquee-container {
             position: absolute;
             top: 0;
@@ -50,29 +48,23 @@
             white-space: nowrap;
             padding-left: 100%;
             display: inline-block;
-            animation: marquee 25s linear infinite; /* 从15s改为25s，速度减慢 */
+            animation: marquee 27s linear infinite;
         }
         
         @keyframes marquee {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
         }
         
-        /* 捐款按钮容器 - 强制显示 */
         .donate-buttons {
             position: absolute;
-            top: 50px; /* 在跑马灯下方 */
+            top: 50px;
             left: 20px;
-            display: flex !important; /* 最高优先级强制显示 */
+            display: flex !important;
             gap: 10px;
             z-index: 1000;
         }
         
-        /* 按钮样式 */
         .donate-link {
             color: #ffcc00;
             font-size: 1.2rem;
@@ -88,10 +80,9 @@
             background: rgba(255, 204, 0, 0.3);
         }
         
-        /* 艺术字容器 */
         .title-box {
             position: absolute;
-            top: 30%; /* 向上移动，为档案馆按钮腾出空间 */
+            top: 30%;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
@@ -101,7 +92,6 @@
                 fadeIn 3s ease-out forwards;
         }
         
-        /* 超大艺术字 */
         .title {
             color: #ffcc00;
             text-shadow: 
@@ -113,51 +103,46 @@
             margin: 0;
         }
         
-        /* 文字坠落动画 */
         @keyframes fallDown {
             from { top: 20%; }
             to { top: 30%; }
         }
         
-        /* 淡入动画 */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
         
-        /* 淡红色副标题 */
         .subtitle {
-            color: #ff9999 !important; /* 强制淡红色（避免被覆盖） */
+            color: #ff9999 !important;
             font-size: 1.8rem;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-            margin: 15px 0 0 0; /* 与主标题间距 */
+            margin: 15px 0 0 0;
             animation: pulse 2s infinite alternate;
-            opacity: 0.8; /* 初始透明度 */
-            display: block; /* 确保独立成行 */
+            opacity: 0.8;
+            display: block;
         }
         
-        /* 呼吸动画 */
         @keyframes pulse {
             0% { opacity: 0.7; transform: scale(0.98); }
             100% { opacity: 1; transform: scale(1.02); }
         }
         
-        /* 主档案馆按钮（居中） */
         .archive-main-button {
             position: absolute;
-            top: 55%; /* 在标题下方 */
+            top: 55%;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #ff3333, #ff6600); /* 红色渐变 */
+            background: linear-gradient(135deg, #ff3333, #ff6600);
             color: white;
-            font-size: 2.8rem; /* 比标题小 */
+            font-size: 2.8rem;
             font-weight: bold;
             padding: 15px 40px;
             border-radius: 15px;
             text-decoration: none;
             box-shadow: 
                 0 5px 15px rgba(0,0,0,0.3),
-                0 0 20px rgba(255, 51, 51, 0.5); /* 发光效果 */
+                0 0 20px rgba(255, 51, 51, 0.5);
             transition: all 0.3s ease;
             z-index: 1000;
             cursor: pointer;
@@ -176,7 +161,6 @@
                 0 0 30px rgba(255, 51, 51, 0.7);
         }
         
-        /* 档案馆按钮动画 */
         .archive-main-button {
             animation: buttonGlow 2s ease-in-out infinite alternate;
         }
@@ -194,20 +178,19 @@
             }
         }
         
-        /* 底部版权信息 */
         .copyright {
             position: absolute;
             bottom: 10px;
             left: 0;
             width: 100%;
             text-align: center;
-            color: #333333; /* 深灰色 */
-            font-size: 0.8rem; /* 小字 */
-            font-family: Arial, sans-serif; /* 使用简单字体 */
+            color: #333333;
+            font-size: 0.8rem;
+            font-family: Arial, sans-serif;
             opacity: 0.7;
             z-index: 999;
             padding: 5px 0;
-            background: rgba(255, 255, 255, 0.1); /* 轻微白色背景增加可读性 */
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .copyright a {
@@ -222,12 +205,10 @@
     </style>
 </head>
 <body>
-    <!-- 跑马灯 -->
     <div class="marquee-container" id="marquee">
-        <div class="marquee-content"Windscribe VPN现在以 低价46.66元 每月购买（原价88.46每月）！ 苹果、安卓、华为、Windows、Mac、路由器、游戏机都可用。请点击广告 咨询、查看信息并联系购买！</div>
+        <div class="marquee-content">HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖</div>
     </div>
     
-    <!-- 双按钮永久固定显示 -->
     <div class="donate-buttons">
         <a href="donate.html" class="donate-link">PayPal鼓励支持</a>
         <a href="wechat-donate.html" class="donate-link">微信赞赏</a>
@@ -238,39 +219,32 @@
         <p class="subtitle">持续开发中，搜集信息中</p>
     </div>
     
-    <!-- 主档案馆按钮（居中） -->
     <a href="archive.html" class="archive-main-button">进入档案馆</a>
     
-    <!-- 底部版权信息 -->
     <div class="copyright">
         © 1989 - 2025 别克·君威回忆网站。此网站保留了很多的最初设计。现任管理者为了使网站适应当今的浏览器和设备，重新设计了部分界面。重新设计的部分使用上世纪的画风模拟时代感。
     </div>
 
     <script>
-        // 跑马灯点击跳转
         document.getElementById('marquee').addEventListener('click', function() {
             window.location.href = 'https://regalmemory.github.io/advert3.html';
         });
         
-        // 禁用右键菜单
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             return false;
         });
         
-        // 禁用文本选择（部分浏览器可能还需要这个）
         document.addEventListener('selectstart', function(e) {
             e.preventDefault();
             return false;
         });
         
-        // 禁用拖拽（针对所有元素）
         document.addEventListener('dragstart', function(e) {
             e.preventDefault();
             return false;
         });
         
-        // 禁用复制、剪切
         document.addEventListener('copy', function(e) {
             e.preventDefault();
             return false;
@@ -281,9 +255,7 @@
             return false;
         });
         
-        // 防止通过快捷键复制（Ctrl+C等）
         document.addEventListener('keydown', function(e) {
-            // 禁用Ctrl+C, Ctrl+X, Ctrl+V
             if ((e.ctrlKey || e.metaKey) && 
                 (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 88 || 
                  e.keyCode === 65 || e.keyCode === 85 || e.keyCode === 83)) {
@@ -291,16 +263,13 @@
                 return false;
             }
             
-            // 禁用F12开发者工具
-            if (e.keyCode === 123) { // F12
+            if (e.keyCode === 123) {
                 e.preventDefault();
                 return false;
             }
         });
         
-        // 禁用开发者工具快捷键（Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C等）
         document.addEventListener('keydown', function(e) {
-            // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
             if (e.ctrlKey && e.shiftKey && 
                 (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
                 e.preventDefault();
