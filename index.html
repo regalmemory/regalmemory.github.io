@@ -12,7 +12,21 @@
             font-family: "楷体", "STKaiti", serif;
             overflow: hidden;
             position: relative;
+            user-select: none; /* 禁用文本选择 */
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
         }
+        
+        /* 禁止图片拖拽 */
+        img {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+        }
+        
         /* 捐款按钮容器 - 强制显示 */
         .donate-buttons {
             position: absolute;
@@ -22,6 +36,7 @@
             gap: 10px;
             z-index: 1000;
         }
+        
         /* 按钮样式 */
         .donate-link {
             color: #ffcc00;
@@ -32,10 +47,12 @@
             padding: 5px 10px;
             border-radius: 5px;
             background: rgba(0,0,0,0.3);
+            cursor: pointer;
         }
         .donate-link:hover {
             background: rgba(255, 204, 0, 0.3);
         }
+        
         /* 艺术字容器 */
         .title-box {
             position: absolute;
@@ -71,30 +88,24 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+        
+        /* 淡红色副标题 */
+        .subtitle {
+            color: #ff9999 !important; /* 强制淡红色（避免被覆盖） */
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            margin: 15px 0 0 0; /* 与主标题间距 */
+            animation: pulse 2s infinite alternate;
+            opacity: 0.8; /* 初始透明度 */
+            display: block; /* 确保独立成行 */
         }
-        .title {
-            color: #ffcc00;
-            text-shadow: 4px 4px 0px #cc3300, 8px 8px 5px rgba(0,0,0,0.5);
-            font-size: 5.5rem;
-            letter-spacing: 3px;
-            margin: 0;
-
-            /* 淡红色副标题 - 强制生效版 */
-    .subtitle {
-        color: #ff9999 !important; /* 强制淡红色（避免被覆盖） */
-        font-size: 1.8rem;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-        margin: 15px 0 0 0; /* 与主标题间距 */
-        animation: pulse 2s infinite alternate;
-        opacity: 0.8; /* 初始透明度 */
-        display: block; /* 确保独立成行 */
-}
-
-    /* 呼吸动画 - 强制定义 */
-    @keyframes pulse {
-        0% { opacity: 0.7; transform: scale(0.98); }
-        100% { opacity: 1; transform: scale(1.02); }
-
+        
+        /* 呼吸动画 */
+        @keyframes pulse {
+            0% { opacity: 0.7; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1.02); }
+        }
+        
         /* 右上角档案馆按钮 */
         .archive-button {
             position: absolute;
@@ -109,15 +120,35 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             transition: all 0.3s;
             z-index: 1000;
+            cursor: pointer;
         }
         .archive-button:hover {
             background: #ff0000;
             transform: translateY(-2px);
-}
+        }
+        
+        /* 右键菜单禁用提示样式 */
+        #contextMenuAlert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #ffcc00;
+            padding: 20px 30px;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            z-index: 9999;
+            display: none;
+            border: 2px solid #ffcc00;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
         }
     </style>
 </head>
 <body>
+    <!-- 右键菜单禁用提示 -->
+    <div id="contextMenuAlert">右键功能已被禁用</div>
+    
     <!-- 双按钮永久固定显示 -->
     <div class="donate-buttons">
         <a href="donate.html" class="donate-link">PayPal鼓励支持</a>
@@ -127,8 +158,97 @@
     <div class="title-box">
         <h1 class="title">别克·君威回忆网站</h1>
         <p class="subtitle">持续开发中，搜集信息中</p>
-        <!-- 右上角档案馆按钮 -->
-    <a href="archive.html" class="archive-button">进入档案馆</a>
     </div>
+    
+    <!-- 右上角档案馆按钮 -->
+    <a href="archive.html" class="archive-button">进入档案馆</a>
+
+    <script>
+        // 禁用右键菜单
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            
+            // 显示提示
+            var alertBox = document.getElementById('contextMenuAlert');
+            alertBox.style.display = 'block';
+            
+            // 2秒后隐藏提示
+            setTimeout(function() {
+                alertBox.style.display = 'none';
+            }, 2000);
+            
+            return false;
+        });
+        
+        // 禁用文本选择（部分浏览器可能还需要这个）
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // 禁用拖拽（针对所有元素）
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // 禁用复制、剪切
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            
+            // 显示提示
+            var alertBox = document.getElementById('contextMenuAlert');
+            alertBox.textContent = '复制功能已被禁用';
+            alertBox.style.display = 'block';
+            
+            setTimeout(function() {
+                alertBox.style.display = 'none';
+            }, 2000);
+            
+            return false;
+        });
+        
+        document.addEventListener('cut', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // 防止通过快捷键复制（Ctrl+C等）
+        document.addEventListener('keydown', function(e) {
+            // 禁用Ctrl+C, Ctrl+X, Ctrl+V
+            if ((e.ctrlKey || e.metaKey) && 
+                (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 88 || 
+                 e.keyCode === 65 || e.keyCode === 85 || e.keyCode === 83)) {
+                e.preventDefault();
+                
+                // 显示提示
+                var alertBox = document.getElementById('contextMenuAlert');
+                alertBox.textContent = '该快捷键已被禁用';
+                alertBox.style.display = 'block';
+                
+                setTimeout(function() {
+                    alertBox.style.display = 'none';
+                }, 2000);
+                
+                return false;
+            }
+            
+            // 禁用F12开发者工具
+            if (e.keyCode === 123) { // F12
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        // 禁用开发者工具快捷键（Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C等）
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+            if (e.ctrlKey && e.shiftKey && 
+                (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
 </body>
 </html>
