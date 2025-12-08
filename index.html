@@ -27,10 +27,45 @@
             user-drag: none;
         }
         
+        /* 跑马灯样式 */
+        .marquee-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffcc00;
+            font-size: 1.4rem;
+            font-weight: bold;
+            overflow: hidden;
+            z-index: 1001;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #ffcc00;
+        }
+        
+        .marquee-content {
+            white-space: nowrap;
+            padding-left: 100%;
+            display: inline-block;
+            animation: marquee 15s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        
         /* 捐款按钮容器 - 强制显示 */
         .donate-buttons {
             position: absolute;
-            top: 20px;
+            top: 50px; /* 在跑马灯下方 */
             left: 20px;
             display: flex !important; /* 最高优先级强制显示 */
             gap: 10px;
@@ -56,7 +91,7 @@
         /* 艺术字容器 */
         .title-box {
             position: absolute;
-            top: 40%;
+            top: 30%; /* 向上移动，为档案馆按钮腾出空间 */
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
@@ -75,12 +110,13 @@
             font-size: 5.5rem;
             white-space: nowrap;
             letter-spacing: 3px;
+            margin: 0;
         }
         
         /* 文字坠落动画 */
         @keyframes fallDown {
             from { top: 20%; }
-            to { top: 50%; }
+            to { top: 30%; }
         }
         
         /* 淡入动画 */
@@ -106,48 +142,64 @@
             100% { opacity: 1; transform: scale(1.02); }
         }
         
-        /* 右上角档案馆按钮 */
-        .archive-button {
+        /* 主档案馆按钮（居中） */
+        .archive-main-button {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #ff3333; /* 红色按钮 */
+            top: 55%; /* 在标题下方 */
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff3333, #ff6600); /* 红色渐变 */
             color: white;
-            font-size: 1.2rem;
-            padding: 5px 15px;
-            border-radius: 5px;
+            font-size: 2.8rem; /* 比标题小 */
+            font-weight: bold;
+            padding: 15px 40px;
+            border-radius: 15px;
             text-decoration: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: all 0.3s;
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.3),
+                0 0 20px rgba(255, 51, 51, 0.5); /* 发光效果 */
+            transition: all 0.3s ease;
             z-index: 1000;
             cursor: pointer;
-        }
-        .archive-button:hover {
-            background: #ff0000;
-            transform: translateY(-2px);
+            border: 3px solid #ffcc00;
+            text-align: center;
+            display: block;
+            width: auto;
+            white-space: nowrap;
         }
         
-        /* 右键菜单禁用提示样式 */
-        #contextMenuAlert {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
-            color: #ffcc00;
-            padding: 20px 30px;
-            border-radius: 10px;
-            font-size: 1.5rem;
-            z-index: 9999;
-            display: none;
-            border: 2px solid #ffcc00;
-            box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+        .archive-main-button:hover {
+            background: linear-gradient(135deg, #ff0000, #ff5500);
+            transform: translateX(-50%) translateY(-5px);
+            box-shadow: 
+                0 8px 20px rgba(0,0,0,0.4),
+                0 0 30px rgba(255, 51, 51, 0.7);
+        }
+        
+        /* 档案馆按钮动画 */
+        .archive-main-button {
+            animation: buttonGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes buttonGlow {
+            from {
+                box-shadow: 
+                    0 5px 15px rgba(0,0,0,0.3),
+                    0 0 20px rgba(255, 51, 51, 0.5);
+            }
+            to {
+                box-shadow: 
+                    0 5px 15px rgba(0,0,0,0.3),
+                    0 0 30px rgba(255, 51, 51, 0.8);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 右键菜单禁用提示 -->
-    <div id="contextMenuAlert">右键功能已被禁用</div>
+    <!-- 跑马灯 -->
+    <div class="marquee-container" id="marquee">
+        <div class="marquee-content">HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖 HSSSS软件售卖</div>
+    </div>
     
     <!-- 双按钮永久固定显示 -->
     <div class="donate-buttons">
@@ -160,23 +212,18 @@
         <p class="subtitle">持续开发中，搜集信息中</p>
     </div>
     
-    <!-- 右上角档案馆按钮 -->
-    <a href="archive.html" class="archive-button">进入档案馆</a>
+    <!-- 主档案馆按钮（居中） -->
+    <a href="archive.html" class="archive-main-button">进入档案馆</a>
 
     <script>
+        // 跑马灯点击跳转
+        document.getElementById('marquee').addEventListener('click', function() {
+            window.location.href = 'https://regalmemory.github.io/advert3.html';
+        });
+        
         // 禁用右键菜单
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
-            
-            // 显示提示
-            var alertBox = document.getElementById('contextMenuAlert');
-            alertBox.style.display = 'block';
-            
-            // 2秒后隐藏提示
-            setTimeout(function() {
-                alertBox.style.display = 'none';
-            }, 2000);
-            
             return false;
         });
         
@@ -195,16 +242,6 @@
         // 禁用复制、剪切
         document.addEventListener('copy', function(e) {
             e.preventDefault();
-            
-            // 显示提示
-            var alertBox = document.getElementById('contextMenuAlert');
-            alertBox.textContent = '复制功能已被禁用';
-            alertBox.style.display = 'block';
-            
-            setTimeout(function() {
-                alertBox.style.display = 'none';
-            }, 2000);
-            
             return false;
         });
         
@@ -220,16 +257,6 @@
                 (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 88 || 
                  e.keyCode === 65 || e.keyCode === 85 || e.keyCode === 83)) {
                 e.preventDefault();
-                
-                // 显示提示
-                var alertBox = document.getElementById('contextMenuAlert');
-                alertBox.textContent = '该快捷键已被禁用';
-                alertBox.style.display = 'block';
-                
-                setTimeout(function() {
-                    alertBox.style.display = 'none';
-                }, 2000);
-                
                 return false;
             }
             
