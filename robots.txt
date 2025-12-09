@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Sitemap: https://regalmemory.github.io/sitemap.xml
+
+# 可选：禁止特定目录（如果你有的话）
+# Disallow: /admin/
+# Disallow: /private/
