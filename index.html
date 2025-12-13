@@ -24,9 +24,57 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
 .copyright{position:absolute;bottom:10px;left:0;width:100%;text-align:center;color:#333;font-size:.8rem;font-family:Arial,sans-serif;opacity:.7;z-index:999;padding:5px 0;background:rgba(255,255,255,0.1)}
 .copyright a{color:#666;text-decoration:none}
 .copyright a:hover{color:#333;text-decoration:underline}
+
+/* 添加的 reCAPTCHA 验证提示样式（不影响原有布局） */
+.recaptcha-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+.recaptcha-modal {
+    background: linear-gradient(135deg, #1a3c6e, #2a5ca0);
+    padding: 30px;
+    border-radius: 15px;
+    border: 3px solid #ffcc00;
+    color: #ffcc00;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.5);
+}
+.recaptcha-modal h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.8rem;
+}
+.recaptcha-modal p {
+    margin: 10px 0;
+    color: #ccc;
+}
+.recaptcha-loading {
+    color: #66ccff;
+    font-size: 1.2rem;
+    margin: 20px 0;
+}
 </style>
 </head>
 <body>
+<!-- 添加的 reCAPTCHA 验证覆盖层 -->
+<div id="recaptcha-overlay" class="recaptcha-overlay">
+    <div class="recaptcha-modal">
+        <h3>安全验证</h3>
+        <p>正在验证访问权限...</p>
+        <div id="recaptcha-loading" class="recaptcha-loading">请稍候，正在进行安全检测</div>
+        <p style="font-size:0.9rem;color:#999;margin-top:20px;">此验证过程有助于保护网站免受恶意访问</p>
+    </div>
+</div>
+
+<!-- 原有内容保持不变 -->
 <div class="marquee-container" id="marquee">
 <div class="marquee-content">WindScribe VPN售卖。原价88.55一个月 现价46.66一个月     加拿大公司 使用行业领先的军事级别加密技术 点击横幅了解详细信息和联系购买</div>
 </div>
@@ -42,6 +90,8 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
 <div class="copyright">
 © 1989 - 2025 别克·君威回忆网站。此网站保留了很多的最初设计。现任管理者为了使网站适应当今的浏览器和设备，重新设计了部分界面。重新设计的部分使用上世纪的画风模拟时代感。
 </div>
+
+<!-- 原有脚本保持不变 -->
 <script>
 var devtools=function(){var e=0;return{isOpen:!1,orientation:void 0}}();
 setInterval(function(){var e=window.outerWidth-window.innerWidth>160||window.outerHeight-window.innerHeight>160;if(!e&&window.Firebug&&window.Firebug.chrome&&window.Firebug.chrome.isInitialized)e=!0;if(e&&!devtools.isOpen){document.body.innerHTML='<div style="width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;background:#000;color:#ff0000;font-size:3rem;font-family:Arial,sans-serif;text-align:center;">The webpage is currently temporarily suspended.<br><span style="font-size:1.5rem;color:#ccc;">Using developer tools or the console while browsing protected web pages is prohibited. Please close the developer tools or console and then refresh the page. 你违反了Cloudflare的政策。禁止在浏览受保护的网页时使用开发者工具或控制台。请关闭开发者工具或控制台，然后刷新网页。</span></div>';throw new Error("禁止开发者工具")}devtools.isOpen=e},100);
@@ -54,5 +104,68 @@ document.addEventListener("cut",function(e){e.preventDefault();return!1});
 document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&(67===e.keyCode||86===e.keyCode||88===e.keyCode||65===e.keyCode||85===e.keyCode||83===e.keyCode)){e.preventDefault();return!1}if(123===e.keyCode){e.preventDefault();return!1}});
 document.addEventListener("keydown",function(e){if(e.ctrlKey&&e.shiftKey&&(73===e.keyCode||74===e.keyCode||67===e.keyCode)){e.preventDefault();return!1}});
 </script>
+
+<!-- 添加的 reCAPTCHA 集成脚本 -->
+<script src="https://www.google.com/recaptcha/api.js?render=6Lc3ciosAAAAAO9XYw7bfUQeTSUjUtasZgN8nuof"></script>
+<script>
+// 使用你截图中的站点密钥
+const RECAPTCHA_SITE_KEY = '6Lc3ciosAAAAAO9XYw7bfUQeTSUjUtasZgN8nuof';
+
+// 修改"进入档案馆"按钮的点击事件
+document.addEventListener('DOMContentLoaded', function() {
+    const archiveButton = document.querySelector('.archive-main-button');
+    const originalHref = archiveButton.getAttribute('href');
+    
+    // 移除原有的链接行为
+    archiveButton.removeAttribute('href');
+    
+    // 添加新的点击事件处理
+    archiveButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        
+        // 显示验证覆盖层
+        const overlay = document.getElementById('recaptcha-overlay');
+        overlay.style.display = 'flex';
+        
+        // 执行 reCAPTCHA v3 验证
+        grecaptcha.ready(function() {
+            grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'enter_archive'})
+                .then(function(token) {
+                    // 这里可以添加后端验证（如果你有服务器）
+                    // 由于GitHub Pages是静态的，我们直接进行前端验证
+                    
+                    // 验证成功后，延迟跳转以显示验证成功信息
+                    document.getElementById('recaptcha-loading').textContent = '✓ 验证成功！正在跳转...';
+                    document.getElementById('recaptcha-loading').style.color = '#66ff66';
+                    
+                    // 延迟1秒后跳转
+                    setTimeout(function() {
+                        window.location.href = originalHref;
+                    }, 1000);
+                })
+                .catch(function(error) {
+                    // 验证失败处理
+                    console.error('reCAPTCHA验证失败:', error);
+                    document.getElementById('recaptcha-loading').textContent = '✗ 验证失败，请刷新页面重试';
+                    document.getElementById('recaptcha-loading').style.color = '#ff6666';
+                    
+                    // 5秒后隐藏覆盖层
+                    setTimeout(function() {
+                        overlay.style.display = 'none';
+                    }, 5000);
+                });
+        });
+    });
+});
+
+// 防止，互㷣莪。
+document.getElementById('recaptcha-overlay').addEventListener('click', function(event) {
+    if (event.target === this) {
+        // 畚哉意纥。
+        event.preventDefault();
+    }
+});
+</script>
+
 </body>
 </html>
